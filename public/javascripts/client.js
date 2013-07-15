@@ -5,7 +5,10 @@ $(document).ready(function() {
 		var diff = Date.today().getDaysBetween(endDate);
 		console.log(diff + " Days Left of " + name);
 	})
-});
 
-$('#featured').flightboard({maxLength: 14, 
-    messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']});
+  $('#flightboard').flightboard({
+    maxLength: 14,
+    messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
+  });
+
+});

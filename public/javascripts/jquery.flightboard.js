@@ -15,7 +15,7 @@
 /* Flight board manager. */
 function FlightBoard() {
 	this._defaults = {
-		lettersImage: '/public/img/flightBoardLarge.png', // Amalgamated image for letters background
+		lettersImage: '/public/img/flightBoardLarge2.png', // Amalgamated image for letters background
 		lettersSize: [25, 34], // Width and height of individual letters
 		lettersSeq: ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', // Positioning of letters within image
 		messages: ['SEE THE FLIGHT BOARD', 'CHANGE MESSAGES'], // Messages to display

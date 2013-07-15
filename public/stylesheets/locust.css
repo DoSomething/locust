@@ -9,14 +9,14 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1120px;
+  width: 1020px;
   height: 710px;
-  margin: -355px 0 0 -560px;
+  margin: -355px 0 0 -510px;
 }
 
 /* line 14, ../sass/_panels.sass */
 .with-margin {
-  margin: 10px;
+  margin: 20px;
 }
 
 /* line 17, ../sass/_panels.sass */
@@ -31,15 +31,16 @@ body {
 
 /* line 23, ../sass/_panels.sass */
 #featured {
-  width: 801px;
-  height: 350px;
+  width: 701px;
+  height: 500px;
   margin: 5px;
   background-color: white;
 }
 
-/* line 30, ../sass/_panels.sass */
+/* line 29, ../sass/_panels.sass */
 #featured-logo {
-  width: 50%;
+  width: 100%;
+  text-align: center;
 }
 /* line 33, ../sass/_panels.sass */
 #featured-logo img {
@@ -48,69 +49,75 @@ body {
 
 /* line 36, ../sass/_panels.sass */
 #featured-info {
-  width: 50%;
+  width: 100%;
 }
 /* line 39, ../sass/_panels.sass */
-#featured-info span {
-  display: block;
-  margin: 0 auto;
-  text-align: center;
+#featured-info .title {
   font-size: 42pt;
 }
-/* line 45, ../sass/_panels.sass */
-#featured-info p {
-  margin-top: 0.5em;
-  text-align: center;
-  font-size: 24pt;
+/* line 42, ../sass/_panels.sass */
+#featured-info .days-remaining {
+  font-size: 22pt;
+  margin-top: 14px;
+}
+
+/* line 46, ../sass/_panels.sass */
+#board-container {
+  width: 570px;
+  margin: 0 auto;
 }
 
 /* line 50, ../sass/_panels.sass */
+#flightboard-label {
+  display: inline-block;
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 18pt;
+}
+
+/* line 56, ../sass/_panels.sass */
 #ds-logo {
   margin-left: -5px;
   margin-bottom: 10px;
 }
-/* line 54, ../sass/_panels.sass */
+/* line 60, ../sass/_panels.sass */
 #ds-logo img {
   width: 275px;
 }
 
-/* line 57, ../sass/_panels.sass */
+/* line 63, ../sass/_panels.sass */
 #up-next {
   width: 299px;
   height: 470px;
   margin: 5px;
   background-color: white;
 }
-/* line 63, ../sass/_panels.sass */
+/* line 69, ../sass/_panels.sass */
 #up-next img {
   width: 100%;
   margin: 0 auto;
   display: block;
 }
 
-/* line 68, ../sass/_panels.sass */
+/* line 74, ../sass/_panels.sass */
 #queue {
-  width: 801px;
-  height: 340px;
+  width: 701px;
+  height: 190px;
   margin: 5px;
   background-color: #1e1d1c;
 }
 
-/* line 74, ../sass/_panels.sass */
+/* line 80, ../sass/_panels.sass */
 .small-panel {
   background-color: white;
   text-align: center;
-}
-
-/* line 79, ../sass/_panels.sass */
-.top-row, .bottom-row {
   float: left;
-  width: 257px;
+  width: 223px;
   margin: 5px;
-  height: 160px;
+  height: 180px;
 }
-/* line 85, ../sass/_panels.sass */
-.top-row img, .bottom-row img {
+/* line 88, ../sass/_panels.sass */
+.small-panel img {
   width: 50%;
   margin: 0 auto;
   display: block;

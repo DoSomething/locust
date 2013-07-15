@@ -6,13 +6,13 @@ body
   position: absolute
   top: 50%
   left: 50%
-  width: 1120px
+  width: 1020px
   height: 710px
-  margin: -355px 0 0 -560px
+  margin: -355px 0 0 -510px
 
 //this is helpful for making the content of this div appear to have padding
 .with-margin
-  margin: 10px
+  margin: 20px
 
 .left
   float: left
@@ -21,31 +21,37 @@ body
   float: right
 
 #featured
-  width: 801px
-  height: 350px
+  width: 701px
+  height: 500px
   margin: 5px
   background-color: $featured-background-color
 
-
 #featured-logo
-  width: 50%
+  width: 100%
+  text-align: center
 
   img
     width: 100%
 
 #featured-info
-  width: 50%
+  width: 100%
 
-  span
-    display: block
-    margin: 0 auto
-    text-align: center
+  .title
     font-size: 42pt
 
-  p
-    margin-top: .5em
-    text-align: center
-    font-size: 24pt
+  .days-remaining
+    font-size: 22pt
+    margin-top: 14px
+
+#board-container
+  width: 570px
+  margin: 0 auto
+
+#flightboard-label
+  display: inline-block
+  margin-top: 5px
+  margin-right: 10px
+  font-size: 18pt
 
 #ds-logo
   margin-left: -5px
@@ -66,21 +72,18 @@ body
     display: block
 
 #queue
-  width: 801px
-  height: 340px
+  width: 701px
+  height: 190px
   margin: 5px
   background-color: $queue-background-color
 
 .small-panel
   background-color: $small-panel-background-color
   text-align: center
-
-
-.top-row, .bottom-row
   float: left
-  width: 257px
+  width: 223px
   margin: 5px
-  height: 160px
+  height: 180px
 
   img
     width: 50%
