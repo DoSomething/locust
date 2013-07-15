@@ -22,28 +22,34 @@ conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINC
 	});
 
 io.sockets.on('connection', function(socket){
-	request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
-		  if (!error && response.statusCode == 200) {
-		  	var activeCampaigns = JSON.parse(body);
-		  	activeCampaigns.forEach(function(c) {
-		  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
-		  			var campaign = JSON.parse(body);
-		  			conn.query('INSERT INTO campaigns (nid, title, startDate, endDate) VALUES ($1, $2, $3, $4)', 
-		  				[campaign['nid'], campaign['title'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
-		  			
-		  			var logo;
-		  			if (campaign['field_campaign_main_image']['und'] == undefined) {
-		  				logo = 'placeholder.jpg'
-		  			} else {
-		  				logo = campaign['field_campaign_main_image']['und'][0]['uri'];
-		  			}
-		  			conn.query('INSERT INTO campaigns (logo) VALUES ($1)', [logo]);
-		  			
-		  			socket.emit("ping", campaign['field_campain_date']['und'][0]['value2'], campaign['title']);
-		  		});
-		  	});
-		  }
-	});
+
+	function run() {
+		console.log("here");
+		request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
+			  if (!error && response.statusCode == 200) {
+			  	var activeCampaigns = JSON.parse(body);
+			  	activeCampaigns.forEach(function(c) {
+			  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
+			  			var campaign = JSON.parse(body);
+			  			conn.query('INSERT INTO campaigns (nid, title, startDate, endDate) VALUES ($1, $2, $3, $4)', 
+			  				[campaign['nid'], campaign['title'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
+			  			
+			  			var logo;
+			  			if (campaign['field_campaign_main_image']['und'] == undefined) {
+			  				logo = 'placeholder.jpg'
+			  			} else {
+			  				logo = campaign['field_campaign_main_image']['und'][0]['uri'];
+			  			}
+			  			conn.query('INSERT INTO campaigns (logo) VALUES ($1)', [logo]);
+
+			  			socket.emit("ping", campaign['field_campain_date']['und'][0]['value2'], campaign['title']);
+			  		});
+			  	});
+			  }
+		});
+		setInterval(run, 86400000);
+	}
+	run();
 });
 
 //conn.query('INSERT INTO campaigns (nid, title, logo, startDate, endDate) VALUES ($1, $2, $3, $4, $5)', 
