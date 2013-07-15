@@ -88,35 +88,38 @@ body {
 /* line 63, ../sass/_panels.sass */
 #up-next {
   width: 299px;
-  height: 470px;
+  height: 270px;
   margin: 5px;
   background-color: white;
+  text-align: center;
 }
-/* line 69, ../sass/_panels.sass */
+/* line 70, ../sass/_panels.sass */
 #up-next img {
   width: 100%;
   margin: 0 auto;
   display: block;
+  margin-bottom: 10px;
 }
-
-/* line 74, ../sass/_panels.sass */
-#queue {
-  width: 701px;
-  height: 190px;
-  margin: 5px;
-  background-color: #1e1d1c;
+/* line 76, ../sass/_panels.sass */
+#up-next span {
+  display: inline-block;
+  font-size: 24pt;
 }
-
 /* line 80, ../sass/_panels.sass */
+#up-next p {
+  margin-top: 0px;
+  font-size: 14pt;
+}
+
+/* line 84, ../sass/_panels.sass */
 .small-panel {
   background-color: white;
   text-align: center;
-  float: left;
-  width: 223px;
+  width: 245px;
   margin: 5px;
   height: 180px;
 }
-/* line 88, ../sass/_panels.sass */
+/* line 91, ../sass/_panels.sass */
 .small-panel img {
   width: 50%;
   margin: 0 auto;
