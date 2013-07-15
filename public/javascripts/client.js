@@ -10,5 +10,12 @@ $(document).ready(function() {
     maxLength: 14,
     messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
   });
+  
+  $('#small-flightboard').flightboard({
+    maxLength: 14,
+    lettersImage: "/public/img/flightBoardSmall.png",
+    lettersSize: [14,18],
+    messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
+  });
 
 });
