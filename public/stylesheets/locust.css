@@ -1,0 +1,78 @@
+/* line 2, ../sass/_panels.sass */
+body {
+  margin: 0;
+  background-color: lime;
+}
+
+/* line 5, ../sass/_panels.sass */
+#wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1220px;
+  height: 710px;
+  margin: -355px 0 0 -610px;
+  background-color: black;
+}
+
+/* line 15, ../sass/_panels.sass */
+.with-margin {
+  margin: 5px;
+}
+
+/* line 18, ../sass/_panels.sass */
+#featured {
+  float: right;
+  width: 801px;
+  height: 350px;
+  margin: 5px;
+  background-color: yellow;
+}
+/* line 25, ../sass/_panels.sass */
+#featured img {
+  width: 50%;
+}
+
+/* line 28, ../sass/_panels.sass */
+#up-next {
+  float: left;
+  width: 399px;
+  height: 700px;
+  margin: 5px;
+  background-color: #ff0033;
+}
+/* line 35, ../sass/_panels.sass */
+#up-next img {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* line 40, ../sass/_panels.sass */
+#queue {
+  float: right;
+  width: 801px;
+  height: 340px;
+  margin: 5px;
+  background-color: orange;
+}
+
+/* line 47, ../sass/_panels.sass */
+.small-panel {
+  background-color: purple;
+  text-align: center;
+}
+
+/* line 52, ../sass/_panels.sass */
+.top-row, .bottom-row {
+  float: left;
+  width: 257px;
+  margin: 5px;
+  height: 160px;
+}
+/* line 58, ../sass/_panels.sass */
+.top-row img, .bottom-row img {
+  width: 50%;
+  margin: 0 auto;
+  display: block;
+}
