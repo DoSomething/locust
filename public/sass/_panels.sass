@@ -6,29 +6,57 @@ body
   position: absolute
   top: 50%
   left: 50%
-  width: 1220px
+  width: 1120px
   height: 710px
-  margin: -355px 0 0 -610px
-  background-color: black
+  margin: -355px 0 0 -560px
 
 //this is helpful for making the content of this div appear to have padding
 .with-margin
-  margin: 5px
+  margin: 10px
+
+.left
+  float: left
+
+.right
+  float: right
 
 #featured
-  float: right
   width: 801px
   height: 350px
   margin: 5px
   background-color: $featured-background-color
 
+
+#featured-logo
+  width: 50%
+
   img
-    width: 50%
+    width: 100%
+
+#featured-info
+  width: 50%
+
+  span
+    display: block
+    margin: 0 auto
+    text-align: center
+    font-size: 42pt
+
+  p
+    margin-top: .5em
+    text-align: center
+    font-size: 24pt
+
+#ds-logo
+  margin-left: -5px
+  margin-bottom: 10px
+
+  img
+    width: 275px
 
 #up-next
-  float: left
-  width: 399px
-  height: 700px
+  width: 299px
+  height: 470px
   margin: 5px
   background-color: $up-next-background-color
 
@@ -38,7 +66,6 @@ body
     display: block
 
 #queue
-  float: right
   width: 801px
   height: 340px
   margin: 5px
