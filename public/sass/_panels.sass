@@ -67,12 +67,13 @@ body
   margin: 5px
   background-color: $up-next-background-color
   text-align: center
+  position: relative
 
   img
     width: 100%
     margin: 0 auto
     display: block
-    margin-bottom: 10px
+    margin-bottom: 5px
     max-height: 130px
 
   span
@@ -81,7 +82,15 @@ body
 
   p
     margin-top: 0px
+    margin-bottom: 5px
     font-size: 14pt
+
+  #up-next-flip
+    position: absolute
+    margin-left: 50%
+    left: -98px
+    width: 196px
+
 
 .small-panel
   background-color: $small-panel-background-color
@@ -89,8 +98,21 @@ body
   width: 245px
   margin: 5px
   height: 180px
+  position: relative
 
   img
     width: 50%
     margin: 0 auto
     display: block
+
+  .small-teaser
+    display: inline-block
+    text-align: justify
+
+  .small-days-remaining
+    display: inline-block
+    width: 100%
+    position: absolute
+    bottom: 0px
+    left: 0px
+    font-weight: bold

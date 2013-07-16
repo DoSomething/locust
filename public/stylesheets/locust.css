@@ -93,37 +93,61 @@ body {
   margin: 5px;
   background-color: white;
   text-align: center;
+  position: relative;
 }
-/* line 71, ../sass/_panels.sass */
+/* line 72, ../sass/_panels.sass */
 #up-next img {
   width: 100%;
   margin: 0 auto;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   max-height: 130px;
 }
-/* line 78, ../sass/_panels.sass */
+/* line 79, ../sass/_panels.sass */
 #up-next span {
   display: inline-block;
   font-size: 24pt;
 }
-/* line 82, ../sass/_panels.sass */
+/* line 83, ../sass/_panels.sass */
 #up-next p {
   margin-top: 0px;
+  margin-bottom: 5px;
   font-size: 14pt;
 }
+/* line 88, ../sass/_panels.sass */
+#up-next #up-next-flip {
+  position: absolute;
+  margin-left: 50%;
+  left: -98px;
+  width: 196px;
+}
 
-/* line 86, ../sass/_panels.sass */
+/* line 95, ../sass/_panels.sass */
 .small-panel {
   background-color: white;
   text-align: center;
   width: 245px;
   margin: 5px;
   height: 180px;
+  position: relative;
 }
-/* line 93, ../sass/_panels.sass */
+/* line 103, ../sass/_panels.sass */
 .small-panel img {
   width: 50%;
   margin: 0 auto;
   display: block;
+}
+/* line 108, ../sass/_panels.sass */
+.small-panel .small-teaser {
+  display: inline-block;
+  text-align: justify;
+}
+/* line 112, ../sass/_panels.sass */
+.small-panel .small-days-remaining {
+  display: inline-block;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  font-weight: bold;
 }

@@ -77,10 +77,6 @@ io.sockets.on('connection', function(socket){
 	run();
 });
 
-//conn.query('INSERT INTO campaigns (nid, title, logo, startDate, endDate) VALUES ($1, $2, $3, $4, $5)', 
-	//[campaign['nid'], campaign['title'], campaign['field_campaign_main_image']['und'][0]['uri'], 
-	//campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
-
 app.get('/', function(req, res) {
 	res.render('index.html');	
 });
