@@ -14,8 +14,14 @@ $(document).ready(function() {
     var name = data.rows[0].title;
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
+    if (remaining < 1) {
+      remaining = "Ends Today";
+    } else if (remaining == 1) {
+      remaining = "Ends Tomorrow";
+    } else {
+      remaining = remaining + " Days Remaining";
+    }
 
-		console.log(remaining + " Days Left of " + name);
     campaigns.push({'name': name,
                     'pic': logo,
                     'daysLeft': remaining });
@@ -41,7 +47,7 @@ var i = 0;
 setInterval(function() {
   $("#locust-load").remove();
   for (var x = 0; x <= 3; x++) {
-    $('.' + "sp".concat(x)).find('.with-margin').html("<h3>" + campaigns[i].name + "</h3>" + campaigns[i].daysLeft + " Days Remaining");
+    $('.' + "sp".concat(x)).find('.with-margin').html("<h3>" + campaigns[i].name + "</h3>" + campaigns[i].daysLeft);
     i++;
     if (i >= campaigns.length) {
       i = 0;
@@ -49,7 +55,7 @@ setInterval(function() {
   }
 
   $('#up-next').find('#name').text(campaigns[i].name);
-  $('#up-next').find('p').text(campaigns[i].daysLeft + " Days Remaining");
+  $('#up-next').find('p').text(campaigns[i].daysLeft);
   $('#up-next').find('img').attr("src", campaigns[i].pic);
 
   i++;
@@ -58,7 +64,7 @@ setInterval(function() {
   }
 
   $('#featured').find('.title').text(campaigns[i].name);
-  $('#featured').find('.days-remaining').text(campaigns[i].daysLeft + " Days Remaining");
+  $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
   $('#featured').find('#featured-logo').find('img').attr("src", campaigns[i].pic);
 
   i++;
