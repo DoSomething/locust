@@ -3,7 +3,6 @@ $(document).ready(function() {
 
   //loading screen
   var loadH = $(window).height();
-  console.log(loadH);
   $("body").append("<div id='locust-load' style='width: 100%; height: " + loadH + "px; text-align: center; position: absolute; z-index: 99; top: 0px; left: 0px; background-color: rgba(0,0,0,1); padding-top: 100px'><img src='/public/locust.gif'/></div>");
 
 	var socket = io.connect(window.location.hostname);
@@ -12,6 +11,8 @@ $(document).ready(function() {
     var data = JSON.parse(info);
     var logo = data.rows[0].logo;
     var name = data.rows[0].title;
+    var teaser = data.rows[0].teaser;
+    console.log(teaser);
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
     if (remaining < 1) {
@@ -24,7 +25,8 @@ $(document).ready(function() {
 
     campaigns.push({'name': name,
                     'pic': logo,
-                    'daysLeft': remaining });
+                    'daysLeft': remaining,
+                    'teaser': teaser});
 	});
   
 
@@ -33,7 +35,7 @@ $(document).ready(function() {
     messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
   });
   
-  $('#small-flightboard').flightboard({
+  $('#up-next-flightboard').flightboard({
     maxLength: 14,
     lettersImage: "/public/img/flightBoardSmall.png",
     lettersSize: [14,18],
@@ -47,7 +49,13 @@ var i = 0;
 setInterval(function() {
   $("#locust-load").remove();
   for (var x = 0; x <= 3; x++) {
-    $('.' + "sp".concat(x)).find('.with-margin').html("<h3>" + campaigns[i].name + "</h3>" + campaigns[i].daysLeft);
+    $('.' + "sp".concat(x)).find('.with-margin').find("h3").text(campaigns[i].name);
+    $('.' + "sp".concat(x)).find('.with-margin').find(".small-days-remaining").text(campaigns[i].daysLeft);
+    if(campaigns[i].teaser.length > 150){
+      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser.substring(0, 147).concat("..."));  
+    }else{
+      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser);
+    }
     i++;
     if (i >= campaigns.length) {
       i = 0;
