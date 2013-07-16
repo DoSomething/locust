@@ -9,6 +9,7 @@
 		"consolidate": "0.7.x",
 		"socket.io": "0.9.x",
 		"request": "2.22.x",
-		"date-utils": "1.2.x"
+		"date-utils": "1.2.x",
+		"jsdom": "0.7.x"
 	}
 }

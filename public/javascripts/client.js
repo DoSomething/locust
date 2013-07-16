@@ -12,6 +12,8 @@ $(document).ready(function() {
     var data = JSON.parse(info);
     var logo = data.rows[0].logo;
     var name = data.rows[0].title;
+    var teaser = data.rows[0].teaser;
+    console.log(teaser);
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
     if (remaining < 1) {
