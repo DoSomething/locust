@@ -24,14 +24,12 @@ conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINC
 io.sockets.on('connection', function(socket){
 
 	function run() {
-		console.log("here");
 		request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
 			  if (!error && response.statusCode == 200) {
 			  	var activeCampaigns = JSON.parse(body);
 			  	activeCampaigns.forEach(function(c) {
 			  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 			  			var campaign = JSON.parse(body);
-			  			console.log(campaign);
 			  			conn.query('INSERT INTO campaigns (nid, title, startDate, endDate) VALUES ($1, $2, $3, $4)', 
 			  				[campaign['nid'], campaign['title'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
 			  			

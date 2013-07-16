@@ -1,5 +1,11 @@
 var campaigns = [];
 $(document).ready(function() {
+
+  //loading screen
+  var loadH = $(window).height();
+  console.log(loadH);
+  $("body").append("<div id='locust-load' style='width: 100%; height: " + loadH + "px; text-align: center; position: absolute; z-index: 99; top: 0px; left: 0px; background-color: rgba(0,0,0,1); padding-top: 100px'><img src='/public/locust.gif'/></div>");
+
 	var socket = io.connect(window.location.hostname);
 
 	socket.on("setCampaign", function (info) {
@@ -8,10 +14,6 @@ $(document).ready(function() {
     var name = data.rows[0].title;
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
-
-    $('#featured').find('.title').text(name);
-    $('#featured').find('.days-remaining').text(remaining + " Days Remaining");
-    $('#featured').find('#featured-logo').find('img').attr("src", logo);
 
 		console.log(remaining + " Days Left of " + name);
     campaigns.push({'name': name,
@@ -29,7 +31,7 @@ $(document).ready(function() {
     maxLength: 14,
     lettersImage: "/public/img/flightBoardSmall.png",
     lettersSize: [14,18],
-    messages: ['FIRST MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
+    messages: ['SMALL MESSAGE', 'SECOND MESSAGE', 'THIRD MESSAGE']
   });
 
 });
@@ -37,6 +39,7 @@ $(document).ready(function() {
 var i = 0;
 
 setInterval(function() {
+  $("#locust-load").remove();
   for (var x = 0; x <= 3; x++) {
     $('.' + "sp".concat(x)).find('.with-margin').html("<h3>" + campaigns[i].name + "</h3>" + campaigns[i].daysLeft + " Days Remaining");
     i++;
