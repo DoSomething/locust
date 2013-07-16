@@ -31,18 +31,27 @@ io.sockets.on('connection', function(socket){
 			  	activeCampaigns.forEach(function(c) {
 			  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 			  			var campaign = JSON.parse(body);
+			  			console.log(campaign);
 			  			conn.query('INSERT INTO campaigns (nid, title, startDate, endDate) VALUES ($1, $2, $3, $4)', 
 			  				[campaign['nid'], campaign['title'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
 			  			
-			  			var logo;
+			  			var pic;
 			  			if (campaign['field_campaign_main_image']['und'] == undefined) {
-			  				logo = 'placeholder.jpg'
+			  				pic = 'placeholder.jpg'
 			  			} else {
-			  				logo = campaign['field_campaign_main_image']['und'][0]['uri'];
+			  				pic = campaign['field_campaign_main_image']['und'][0]['uri'];
+			  				pic = pic.replace("public://", "");
+			  				pic = "http://www.dosomething.org/files/styles/campaigns_image/public/".concat(pic);
 			  			}
-			  			conn.query('INSERT INTO campaigns (logo) VALUES ($1)', [logo]);
+			  			conn.query('UPDATE campaigns SET logo=($1) WHERE nid=($2)', [pic, campaign['nid']]);
 
-			  			socket.emit("ping", campaign['field_campain_date']['und'][0]['value2'], campaign['title']);
+			  			
+
+			  			conn.query('SELECT title, logo, endDate FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
+			  				//send back to client list of past messages from the chatroom
+			  				var info = JSON.stringify(result);
+			  				socket.emit('setCampaign', info);
+			  			});
 			  		});
 			  	});
 			  }
