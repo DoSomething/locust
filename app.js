@@ -46,8 +46,6 @@ io.sockets.on('connection', function(socket){
 			  	  			if(teaser == null){
 			  	  				teaser = "";
 			  	  			}
-			  	  			conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate) VALUES ($1, $2, $3, $4, $5)', 
-			  	  				[campaign['nid'], campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2']]);
 
 			  	  			var pic;
 			  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
@@ -57,11 +55,18 @@ io.sockets.on('connection', function(socket){
 			  	  				pic = pic.replace("public://", "");
 			  	  				pic = "http://www.dosomething.org/files/styles/campaigns_image/public/".concat(pic);
 			  	  			}
-			  	  			conn.query('UPDATE campaigns SET logo=($1) WHERE nid=($2)', [pic, campaign['nid']]);
 
-			  	  			
+			  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+			  	  			  if(result.rowCount != 0){
+			  	  			    var oldUsersNow = result.rows[0].usersNow;
+			  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], oldUsersNow, 99, pic, campaign['nid']]);
+			  	  			  }else{
+			  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
+			  	  			      [campaign['nid'], campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], 55, pic]);
+			  	  			  }
+			  	  			});
 
-			  	  			conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
+			  	  			conn.query('SELECT title, logo, teaser, endDate, usersYest, usersNow FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
 			  	  				//send back to client list of past messages from the chatroom
 			  	  				var info = JSON.stringify(result);
 			  	  				socket.emit('setCampaign', info);
