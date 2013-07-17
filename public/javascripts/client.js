@@ -36,11 +36,6 @@ $(document).ready(function() {
     console.log(campaigns[0].usersYest);
 
     if(campaigns.length == 1){// fill in the featured panel
-      $('#flightboard').flightboard({
-        maxLength: 14,
-        repeat: false,
-        messages: ["" + campaigns[0].usersYest, "" + campaigns[0].usersNow]
-      });
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       $('#featured').find('#featured-logo').find('img').attr("src", campaigns[0].pic);
@@ -78,6 +73,13 @@ var i = 1;
 var rotateFeatured = setInterval(function() { // wait 5 seconds for data to be received
   //must save a copy of i for global use reset at end of this function
   var saveI = i;
+    $('#flightboard').flightboard('destroy');
+
+    $('#flightboard').flightboard({
+      maxLength: 7,
+      repeat: false,
+      messages: [""+ i + " "  + campaigns[i].usersYest, "" + i + " " + campaigns[i].usersNow]
+    });
 
   $('#flightboard').flightboard('flip');
 
