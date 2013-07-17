@@ -1,4 +1,6 @@
 var campaigns = [];
+var i = 0;
+
 $(document).ready(function() {
 
   //loading screen
@@ -30,12 +32,29 @@ $(document).ready(function() {
                     'daysLeft': remaining,
                     'teaser': teaser,
                     'usersYest': usersYest,
-                    'usersNow': usersNow
+                    'usersNow': usersNow,
+                    'messages': []
                   });
 
-    console.log(campaigns[0].usersYest);
+    for (var x = usersYest; x <= usersNow; x++) {
+      campaigns[campaigns.length -  1].messages.push("" + x);
+    }
+    
+
 
     if(campaigns.length == 1){// fill in the featured panel
+      $('#flightboard').flightboard({
+        maxLength: 7,
+        repeat: false,
+        sequential: false,
+        messages: campaigns[campaigns.length -  1].messages
+      });
+
+      console.log(campaigns[0].messages);
+      flipPause = (dayLength  - (campaigns[campaigns.length -  1].messages.length * 500)) / campaigns[campaigns.length -  1].messages.length;
+      console.log("flip pause " + flipPause);
+      setInterval(flip, flipPause);
+
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       $('#featured').find('#featured-logo').find('img').attr("src", campaigns[0].pic);
@@ -68,55 +87,66 @@ $(document).ready(function() {
 
 });
 
-var i = 1;
+var dayLength = 360000;
+var flipPause;  
+var flipInterval;
 
-var rotateFeatured = setInterval(function() { // wait 5 seconds for data to be received
-  //must save a copy of i for global use reset at end of this function
-  var saveI = i;
-    $('#flightboard').flightboard('destroy');
-
-    $('#flightboard').flightboard({
-      maxLength: 7,
-      repeat: false,
-      messages: [""+ i + " "  + campaigns[i].usersYest, "" + i + " " + campaigns[i].usersNow]
-    });
-
+function flip() {
+  console.log("flip please!");
   $('#flightboard').flightboard('flip');
+  //campaigns[i].messages.splice(0, 1);
+}
 
-  // fill in the featured panel
-  $('#featured').find('.title').text(campaigns[i].name);
-  $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#featured').find('#featured-logo').find('img').attr("src", campaigns[i].pic);
-  i++;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
+// var rotateFeatured = setInterval(function() {
+//   //must save a copy of i for global use reset at end of this function
+//   i++;
+//   var saveI = i;
+//   flipPause = (dayLength  - (campaigns[i].messages.length * 500)) / campaigns[i].messages.length;
+//   $('#flightboard').flightboard('destroy');
 
-  // fill in the up next panel
-  $('#up-next').find('#name').text(campaigns[i].name);
-  $('#up-next').find('p').text(campaigns[i].daysLeft);
-  $('#up-next').find('img').attr("src", campaigns[i].pic);
-  i++;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
+//   $('#flightboard').flightboard({
+//     maxLength: 7,
+//     repeat: false,
+//     sequential: true,
+//     messages: campaigns[i].messages
+//   });
+//   clearInterval(flipInterval);
+//   setInterval(flip, flipPause);
 
-  // fill in the small panels
-  for (var x = 3; x >= 0; x--) {
-    $('.' + "sp".concat(x)).find('.with-margin').find("h3").text(campaigns[i].name);
-    $('.' + "sp".concat(x)).find('.with-margin').find(".small-days-remaining").text(campaigns[i].daysLeft);
-    if(campaigns[i].teaser.length > 145){
-      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
-    }else{
-      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser);
-    }
-    i++;
-    if (i >= campaigns.length) {
-      i = 0;
-    }
-  }
-  i = saveI + 1;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
-}, 5000);
+//   // fill in the featured panel
+//   $('#featured').find('.title').text(campaigns[i].name);
+//   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
+//   $('#featured').find('#featured-logo').find('img').attr("src", campaigns[i].pic);
+//   i++;
+//   if (i >= campaigns.length) {
+//     i = 0;
+//   }
+
+//   // fill in the up next panel
+//   $('#up-next').find('#name').text(campaigns[i].name);
+//   $('#up-next').find('p').text(campaigns[i].daysLeft);
+//   $('#up-next').find('img').attr("src", campaigns[i].pic);
+//   i++;
+//   if (i >= campaigns.length) {
+//     i = 0;
+//   }
+
+//   // fill in the small panels
+//   for (var x = 3; x >= 0; x--) {
+//     $('.' + "sp".concat(x)).find('.with-margin').find("h3").text(campaigns[i].name);
+//     $('.' + "sp".concat(x)).find('.with-margin').find(".small-days-remaining").text(campaigns[i].daysLeft);
+//     if(campaigns[i].teaser.length > 145){
+//       $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
+//     }else{
+//       $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser);
+//     }
+//     i++;
+//     if (i >= campaigns.length) {
+//       i = 0;
+//     }
+//   }
+//   i = saveI;
+//   if (i >= campaigns.length) {
+//     i = 0;
+//   }
+// }, 60000);
