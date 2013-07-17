@@ -49,7 +49,7 @@ io.sockets.on('connection', function(socket){
 
 			  	  			var pic;
 			  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
-			  	  				pic = 'http://www.dosomething.org/files/styles/campaigns_image/public/mm-logo.png';
+			  	  				pic = '/public/ds-logo.png';
 			  	  			} else {
 			  	  				pic = campaign['field_campaign_main_image']['und'][0]['uri'];
 			  	  				pic = pic.replace("public://", "");
