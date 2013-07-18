@@ -59,7 +59,8 @@ io.sockets.on('connection', function(socket){
 			  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
 			  	  			  if(result.rowCount != 0){
 			  	  			    var oldUsersNow = result.rows[0].usersNow;
-			  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], oldUsersNow, 100, pic, campaign['nid']]);
+			  	  			    // WARNING oldUsersNow must be placed into the update statment below
+			  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], 56, 100, pic, campaign['nid']]);
 			  	  			  }else{
 			  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
 			  	  			      [campaign['nid'], campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], 55, pic]);
