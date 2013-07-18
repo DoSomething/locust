@@ -23,7 +23,7 @@ conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINC
 	});
 
 io.sockets.on('connection', function(socket){
-	run()
+	run();
 	setInterval(run, 86400000);
 
 	function run() {
@@ -42,8 +42,7 @@ io.sockets.on('connection', function(socket){
 
 			  	  			var campaign = JSON.parse(body);
 			  	  			if (campaign['field_campaign_promo_image']['und'] != undefined) {
-			  	  				console.log(campaign['field_campaign_promo_image']['und'][0]['uri']);
-
+			  	  				//console.log(campaign['field_campaign_promo_image']['und'][0]['uri']);
 			  	  			}
 
 			  	  			var endDate = Date.parse(campaign['field_campain_date']['und'][0]['value2']);
