@@ -20,7 +20,7 @@ function FlightBoard() {
 		lettersSeq: ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', // Positioning of letters within image
 		messages: ['SEE THE FLIGHT BOARD', 'CHANGE MESSAGES'], // Messages to display
 		maxLength: 20, // Maximum length of flight board
-		flips: [3, 5], // Number of flips before new value,
+		flips: [1, 1], // Number of flips before new value,
 			// may be an array with minimum and maximum flips
 		sequential: false, // True to step through all letters, false for random ones
 		speed: 500, // Time taken (milliseconds) for a single transition
