@@ -53,7 +53,8 @@ io.sockets.on('connection', function(socket){
 			  	  			}
 
 			  	  			var endDate = Date.parse(campaign['field_campain_date']['und'][0]['value2']);
-			  	  			if (Date.equals(endDate, Date.yesterday())) {
+
+			  	  			if (Date.equals(endDate, Date.yesterday())) { //if campaign has ended
 			  	  				console.log("ended yesterday");
 			  	  				conn.query('DELETE FROM campaigns WHERE nid=$1', campaign['nid']);
 			  	  			} else {
@@ -80,14 +81,13 @@ io.sockets.on('connection', function(socket){
 				  	  			    // WARNING oldUsersNow must be placed into the update statment below
 				  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7, bigPic=$8  WHERE nid=$9', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, bigPic, campaign['nid']]);
 				  	  			  }else{
-				  	  			  	usersNow = 56; // remove for production
+				  	  			  	usersNow = 56; // REMOVE for production
 				  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo, bigPic) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', 
 				  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic, bigPic]);
 				  	  			  }
 				  	  			});
 
 				  	  			conn.query('SELECT title, logo, bigPic, teaser, endDate, usersYest, usersNow FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
-				  	  				//send back to client list of past messages from the chatroom
 				  	  				var info = JSON.stringify(result);
 				  	  				socket.emit('setCampaign', info);
 			  	  				});

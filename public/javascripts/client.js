@@ -73,7 +73,8 @@ $(document).ready(function() {// begin jQuery
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       $('#featured').find('.logo').find('img').attr("src", campaigns[0].bigPic);
-    }else if(campaigns.length == 2){// fill in the up next panel
+    }
+    else if(campaigns.length == 2){// fill in the up next panel
       $('#up-next-flightboard').flightboard({
         lettersImage: "/public/img/flightBoardSmall.png",
         lettersSize: [14,18],
@@ -89,7 +90,8 @@ $(document).ready(function() {// begin jQuery
       $('#up-next').find('.title').text(campaigns[1].name);
       $('#up-next').find('.days-remaining').text(campaigns[1].daysLeft);
       $('#up-next').find('.logo').find('img').attr("src", campaigns[1].pic);
-    }else{// fill in the small panels
+    }
+    else{// fill in the small panels
       campaigns[campaigns.length - 1].flipPause = (dayLength  - (campaigns[campaigns.length - 1].messages.length * 500)) / campaigns[campaigns.length - 1].messages.length;
       
       $('.' + "sp".concat(spIndex)).find('.with-margin').find("h3").text(campaigns[campaigns.length - 1].name);
