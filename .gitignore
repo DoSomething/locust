@@ -4,6 +4,6 @@
 #ignore node_modules
 /node_modules/**/*
 
-public/.sass-cache*
+/public/.sass-cache/**/*
 
 campaigns.db
