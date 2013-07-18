@@ -64,7 +64,6 @@ $(document).ready(function() {// begin jQuery
         messages: campaigns[0].messages
       });
 
-      console.log(campaigns[0].messages);
       
       campaigns[0].flipPause = (dayLength  - (campaigns[0].messages.length * 500)) / campaigns[0].messages.length;
       flipInterval = setInterval(flip, campaigns[0].flipPause);
@@ -115,7 +114,6 @@ function flip() {
     return;
   }
   campaigns[i].flipCount++;
-  console.log("flip to " + campaigns[i].flipCount);
   $('#flightboard').flightboard('flip');
 }
 
@@ -126,7 +124,6 @@ function smallFlip() {
     return;
   }
   campaigns[upNextI].flipCount++;
-  console.log("small flip to " + campaigns[upNextI].flipCount);
   $('#up-next-flightboard').flightboard('flip');
 }
 
