@@ -20,40 +20,7 @@ body
 .right
   float: right
 
-#featured
-  width: 701px
-  height: 500px
-  margin: 5px
-  background-color: $featured-background-color
-
-#featured-logo
-  width: 100%
-  text-align: center
-
-  img
-    width: 100%
-    max-height: 330px
-
-#featured-info
-  width: 100%
-
-  .title
-    font-size: 42pt
-
-  .days-remaining
-    font-size: 22pt
-    margin-top: 14px
-
-#board-container
-  width: 390px
-  margin: 0 auto
-
-#flightboard-label
-  display: inline-block
-  margin-top: 5px
-  margin-right: 10px
-  font-size: 18pt
-
+// DoSomething.org logo
 #ds-logo
   margin-left: -5px
   margin-bottom: 10px
@@ -61,6 +28,41 @@ body
   img
     width: 275px
 
+// featured panel
+#featured
+  width: 701px
+  height: 500px
+  margin: 5px
+  background-color: $featured-background-color
+
+  .logo
+    width: 100%
+
+    img
+      width: 100%
+      max-height: 330px
+
+  .info
+    width: 100%
+
+    .title
+      font-size: 42pt
+
+    .days-remaining
+      font-size: 22pt
+      margin-top: 14px
+
+  .board-container
+    width: 390px
+    margin: 0 auto
+
+    .board-label
+      display: inline-block
+      margin-top: 5px
+      margin-right: 10px
+      font-size: 18pt
+
+// up next panel
 #up-next
   width: 299px
   height: 270px
@@ -69,28 +71,38 @@ body
   text-align: center
   position: relative
 
-  img
+  .logo
     width: 100%
+    
+    img
+      width: 100%
+      margin: 0 auto
+      display: block
+      margin-bottom: 5px
+      max-height: 130px
+
+  .info
+    width: 100%
+
+    .title
+      font-size: 20pt
+      display: block
+
+    .days-remaining
+      display: block
+      margin-top: 0px
+      margin-bottom: 5px
+      font-size: 14pt
+
+  .board-container
+    width: 220px
     margin: 0 auto
-    display: block
-    margin-bottom: 5px
-    max-height: 130px
 
-  span
-    display: inline-block
-    font-size: 24pt
-
-  p
-    margin-top: 0px
-    margin-bottom: 5px
-    font-size: 14pt
-
-  #up-next-flip
-    position: absolute
-    margin-left: 50%
-    left: -50px
-    width: 99px
-
+    .board-label
+      display: inline-block
+      margin-top: 2px
+      margin-right: 10px
+      font-size: 10pt
 
 .small-panel
   background-color: $small-panel-background-color
