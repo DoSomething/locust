@@ -70,7 +70,7 @@ $(document).ready(function() {// begin jQuery
 
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
-      $('#featured').find('#featured-logo').find('img').attr("src", campaigns[0].pic);
+      $('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
     }else if(campaigns.length == 2){// fill in the up next panel
       $('#up-next-flightboard').flightboard({
         lettersImage: "/public/img/flightBoardSmall.png",
@@ -84,9 +84,9 @@ $(document).ready(function() {// begin jQuery
       campaigns[1].flipPause = (dayLength  - (campaigns[1].messages.length * 500)) / campaigns[1].messages.length;
       smallFlipInterval = setInterval(smallFlip, campaigns[1].flipPause);
 
-      $('#up-next').find('#name').text(campaigns[1].name);
-      $('#up-next').find('p').text(campaigns[1].daysLeft);
-      $('#up-next').find('img').attr("src", campaigns[1].pic);
+      $('#up-next').find('.title').text(campaigns[1].name);
+      $('#up-next').find('.days-remaining').text(campaigns[1].daysLeft);
+      $('#up-next').find('.logo').find('img').attr("src", campaigns[1].pic);
     }else{// fill in the small panels
       campaigns[campaigns.length - 1].flipPause = (dayLength  - (campaigns[campaigns.length - 1].messages.length * 500)) / campaigns[campaigns.length - 1].messages.length;
       
@@ -171,7 +171,7 @@ var rotateFeatured = setInterval(function() {
   // fill in the featured panel
   $('#featured').find('.title').text(campaigns[i].name);
   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#featured').find('#featured-logo').find('img').attr("src", campaigns[i].pic);
+  $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
   i++;
   if (i >= campaigns.length) {
     i = 0;
@@ -222,9 +222,9 @@ var rotateFeatured = setInterval(function() {
   smallFlipInterval = setInterval(smallFlip, campaigns[upNextI].flipPause);
 
   // fill in the up next panel
-  $('#up-next').find('#name').text(campaigns[i].name);
-  $('#up-next').find('p').text(campaigns[i].daysLeft);
-  $('#up-next').find('img').attr("src", campaigns[i].pic);
+  $('#up-next').find('.title').text(campaigns[i].name);
+  $('#up-next').find('.days-remaining').text(campaigns[i].daysLeft);
+  $('#up-next').find('.logo').find('img').attr("src", campaigns[i].pic);
   i++;
   if (i >= campaigns.length) {
     i = 0;
