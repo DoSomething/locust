@@ -17,7 +17,7 @@ app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
 app.use('/public', express.static(__dirname + '/public'));
 
-conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, teaser TEXT, startDate TEXT, endDate TEXT, usersYest INTEGER, usersNow INTEGER)')
+conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, bigPic TEXT, teaser TEXT, startDate TEXT, endDate TEXT, usersYest INTEGER, usersNow INTEGER)')
 	.on('end', function(){
 		console.log('Made campaigns table.');
 	});
@@ -41,8 +41,15 @@ io.sockets.on('connection', function(socket){
 			  	  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
 			  	  			var campaign = JSON.parse(body);
-			  	  			if (campaign['field_campaign_promo_image']['und'] != undefined) {
-			  	  				//console.log(campaign['field_campaign_promo_image']['und'][0]['uri']);
+
+			  	  			var bigPic;
+			  	  			if (campaign['field_campaign_promo_image']['und'] == undefined) {
+			  	  				bigPic = '/public/ds-logo.png';
+			  	  			} else {
+			  	  				bigPic = campaign['field_campaign_promo_image']['und'][0]['uri'];
+			  	  				bigPic = bigPic.replace("public://", "");
+			  	  				bigPic = "http://www.dosomething.org/files/".concat(bigPic);
+			  	  				console.log(bigPic);
 			  	  			}
 
 			  	  			var endDate = Date.parse(campaign['field_campain_date']['und'][0]['value2']);
@@ -61,6 +68,7 @@ io.sockets.on('connection', function(socket){
 				  	  				pic = campaign['field_campaign_main_image']['und'][0]['uri'];
 				  	  				pic = pic.replace("public://", "");
 				  	  				pic = "http://www.dosomething.org/files/styles/campaigns_image/public/".concat(pic);
+
 				  	  			}
 
 				  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
@@ -70,15 +78,15 @@ io.sockets.on('connection', function(socket){
 				  	  			    	usersYest = result.rows[0].usersYest;
 				  	  			    }
 				  	  			    // WARNING oldUsersNow must be placed into the update statment below
-				  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, campaign['nid']]);
+				  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7, bigPic=$8  WHERE nid=$9', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, bigPic, campaign['nid']]);
 				  	  			  }else{
 				  	  			  	usersNow = 56; // remove for production
-				  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
-				  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic]);
+				  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo, bigPic) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', 
+				  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic, bigPic]);
 				  	  			  }
 				  	  			});
 
-				  	  			conn.query('SELECT title, logo, teaser, endDate, usersYest, usersNow FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
+				  	  			conn.query('SELECT title, logo, bigPic, teaser, endDate, usersYest, usersNow FROM campaigns WHERE nid=$1', [campaign['nid']], function(error, result) {
 				  	  				//send back to client list of past messages from the chatroom
 				  	  				var info = JSON.stringify(result);
 				  	  				socket.emit('setCampaign', info);

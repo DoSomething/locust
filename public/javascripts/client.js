@@ -20,6 +20,7 @@ $(document).ready(function() {// begin jQuery
 	socket.on("setCampaign", function (info) {
     var data = JSON.parse(info);
     var logo = data.rows[0].logo;
+    var bigLogo = data.rows[0].bigPic
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
     var usersYest = data.rows[0].usersYest;
@@ -36,6 +37,7 @@ $(document).ready(function() {// begin jQuery
 
     campaigns.push({'name': name,
                     'pic': logo,
+                    'bigPic': bigLogo,
                     'daysLeft': remaining,
                     'teaser': teaser,
                     'usersYest': usersYest,
@@ -70,7 +72,7 @@ $(document).ready(function() {// begin jQuery
 
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
-      $('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
+      $('#featured').find('.logo').find('img').attr("src", campaigns[0].bigPic);
     }else if(campaigns.length == 2){// fill in the up next panel
       $('#up-next-flightboard').flightboard({
         lettersImage: "/public/img/flightBoardSmall.png",
@@ -171,7 +173,7 @@ var rotateFeatured = setInterval(function() {
   // fill in the featured panel
   $('#featured').find('.title').text(campaigns[i].name);
   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
+  $('#featured').find('.logo').find('img').attr("src", campaigns[i].bigPic);
   i++;
   if (i >= campaigns.length) {
     i = 0;
