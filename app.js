@@ -23,6 +23,8 @@ conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINC
 	});
 
 io.sockets.on('connection', function(socket){
+	run()
+	setInterval(run, 86400000);
 
 	function run() {
 		request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
@@ -34,28 +36,24 @@ io.sockets.on('connection', function(socket){
 			  	  "http://www.dosomething.org/campaigns",
 			  	  ["http://code.jquery.com/jquery.js"],
 			  	  function (errors, window) {
-			  	  	teaserElements = window.$(".campaign-teaser");
-			  	  	window.$.each(teaserElements, function() {
-			  	  		teasers[window.$(this).parent().parent().find(".apps-image").find("a").attr("href")] = window.$(this).text();
-			  	  	});
 			  	  	
 			  	  	activeCampaigns.forEach(function(c) {
 			  	  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
 			  	  			var campaign = JSON.parse(body);
+			  	  			if (campaign['field_campaign_promo_image']['und'] != undefined) {
+			  	  				console.log(campaign['field_campaign_promo_image']['und'][0]['uri']);
+
+			  	  			}
 
 			  	  			var endDate = Date.parse(campaign['field_campain_date']['und'][0]['value2']);
 			  	  			if (Date.equals(endDate, Date.yesterday())) {
 			  	  				console.log("ended yesterday");
 			  	  				conn.query('DELETE FROM campaigns WHERE nid=$1', campaign['nid']);
 			  	  			} else {
-			  	  				console.log(endDate);
+			  	  				//console.log(endDate);
 
-				  	  			var teaser = teasers[campaign["path"]];
 				  	  			var usersNow = 100; // fill this in with reallllll data!
-				  	  			if(teaser == null){
-				  	  				teaser = "";
-				  	  			}
 
 				  	  			var pic;
 				  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
@@ -73,11 +71,11 @@ io.sockets.on('connection', function(socket){
 				  	  			    	usersYest = result.rows[0].usersYest;
 				  	  			    }
 				  	  			    // WARNING oldUsersNow must be placed into the update statment below
-				  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, campaign['nid']]);
+				  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7 WHERE nid=$8', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, campaign['nid']]);
 				  	  			  }else{
 				  	  			  	usersNow = 56; // remove for production
 				  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
-				  	  			      [campaign['nid'], campaign['title'], teaser, campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic]);
+				  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic]);
 				  	  			  }
 				  	  			});
 
@@ -93,9 +91,7 @@ io.sockets.on('connection', function(socket){
 			  	);
 			  }
 		});
-		setInterval(run, 86400000);
 	}
-	run();
 });
 
 app.get('/', function(req, res) {
