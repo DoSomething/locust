@@ -74,6 +74,11 @@ $(document).ready(function() {// begin jQuery
       $('#featured').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       $('#featured').find('.logo').find('img').attr("src", campaigns[0].bigPic);
+      if(campaigns[0].teaser.length > 145){
+        $('#featured').find(".big-teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
+      }else{
+        $('#featured').find(".big-teaser").text(campaigns[0].teaser);
+      }
     }
     else if(campaigns.length == 2){// fill in the up next panel
       $('#up-next-flightboard').flightboard({
@@ -181,6 +186,11 @@ var rotateFeatured = setInterval(function() {
   $('#featured').find('.title').text(campaigns[i].name);
   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
   $('#featured').find('.logo').find('img').attr("src", campaigns[i].bigPic);
+  if(campaigns[i].teaser.length > 145){
+    $('#featured').find(".big-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
+  }else{
+    $('#featured').find(".big-teaser").text(campaigns[i].teaser);
+  }
   i++;
   if (i >= campaigns.length) {
     i = 0;
