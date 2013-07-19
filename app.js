@@ -41,6 +41,7 @@ io.sockets.on('connection', function(socket){
 			  	  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
 			  	  			var campaign = JSON.parse(body);
+			  	  			//console.log(campaign);
 
 			  	  			var bigPic;
 			  	  			if (campaign['field_campaign_promo_image']['und'] == undefined) {

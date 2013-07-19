@@ -96,14 +96,14 @@ $(document).ready(function() {// begin jQuery
       campaigns[campaigns.length - 1].flipPause = (dayLength  - (campaigns[campaigns.length - 1].messages.length * 500)) / campaigns[campaigns.length - 1].messages.length;
       if (spIndex >= 0) {
         numSmallPanels++;
-        var panel = $('.' + "sp".concat(spIndex));
+        var panel = $('.' + "sp".concat(spIndex)).find('.with-margin');
         panel.toggle();
-        panel.find('.with-margin').find("h3").text(campaigns[campaigns.length - 1].name);
-        panel.find('.with-margin').find(".small-days-remaining").text(campaigns[campaigns.length - 1].daysLeft);
+        panel.find("h3").text(campaigns[campaigns.length - 1].name);
+        panel.find(".small-days-remaining").text(campaigns[campaigns.length - 1].daysLeft);
         if(campaigns[campaigns.length - 1].teaser.length > 145){
-          panel.find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser.substring(0, 142).concat("..."));  
+          panel.find(".small-teaser").text(campaigns[campaigns.length - 1].teaser.substring(0, 142).concat("..."));  
         }else{
-          panel.find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser);
+          panel.find(".small-teaser").text(campaigns[campaigns.length - 1].teaser);
         }
       }
       spIndex--;
