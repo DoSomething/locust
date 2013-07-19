@@ -1,6 +1,7 @@
 var campaigns = [];
 var i = 0;
 var upNextI = 1;
+var numSmallPanels = 0;
 
 //flip variables
 var dayLength = 135000;
@@ -93,13 +94,17 @@ $(document).ready(function() {// begin jQuery
     }
     else{// fill in the small panels
       campaigns[campaigns.length - 1].flipPause = (dayLength  - (campaigns[campaigns.length - 1].messages.length * 500)) / campaigns[campaigns.length - 1].messages.length;
-      
-      $('.' + "sp".concat(spIndex)).find('.with-margin').find("h3").text(campaigns[campaigns.length - 1].name);
-      $('.' + "sp".concat(spIndex)).find('.with-margin').find(".small-days-remaining").text(campaigns[campaigns.length - 1].daysLeft);
-      if(campaigns[campaigns.length - 1].teaser.length > 145){
-        $('.' + "sp".concat(spIndex)).find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser.substring(0, 142).concat("..."));  
-      }else{
-        $('.' + "sp".concat(spIndex)).find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser);
+      if (spIndex >= 0) {
+        numSmallPanels++;
+        var panel = $('.' + "sp".concat(spIndex));
+        panel.toggle();
+        panel.find('.with-margin').find("h3").text(campaigns[campaigns.length - 1].name);
+        panel.find('.with-margin').find(".small-days-remaining").text(campaigns[campaigns.length - 1].daysLeft);
+        if(campaigns[campaigns.length - 1].teaser.length > 145){
+          panel.find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser.substring(0, 142).concat("..."));  
+        }else{
+          panel.find('.with-margin').find(".small-teaser").text(campaigns[campaigns.length - 1].teaser);
+        }
       }
       spIndex--;
       if(spIndex == -1){
@@ -235,7 +240,7 @@ var rotateFeatured = setInterval(function() {
   }
 
   // fill in the small panels
-  for (var x = 3; x >= 0; x--) {
+  for (var x = 3; x >= (4-numSmallPanels); x--) {
     $('.' + "sp".concat(x)).find('.with-margin').find("h3").text(campaigns[i].name);
     $('.' + "sp".concat(x)).find('.with-margin').find(".small-days-remaining").text(campaigns[i].daysLeft);
     if(campaigns[i].teaser.length > 145){

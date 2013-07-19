@@ -136,6 +136,7 @@ body {
 
 /* line 110, ../sass/_panels.sass */
 .small-panel {
+  display: none;
   background-color: white;
   text-align: center;
   width: 245px;
@@ -143,18 +144,18 @@ body {
   height: 180px;
   position: relative;
 }
-/* line 118, ../sass/_panels.sass */
+/* line 119, ../sass/_panels.sass */
 .small-panel img {
   width: 50%;
   margin: 0 auto;
   display: block;
 }
-/* line 123, ../sass/_panels.sass */
+/* line 124, ../sass/_panels.sass */
 .small-panel .small-teaser {
   display: inline-block;
   text-align: justify;
 }
-/* line 127, ../sass/_panels.sass */
+/* line 128, ../sass/_panels.sass */
 .small-panel .small-days-remaining {
   display: inline-block;
   width: 100%;
