@@ -72,6 +72,7 @@ io.sockets.on('connection', function(socket){
 			  
 			  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], Date.today()], function(error, result) {
 			  	  				if (result.rowCount == 0) {
+			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 55, Date.yesterday()]);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
 			  	  				}
 			  	  			});
@@ -106,7 +107,8 @@ io.sockets.on('connection', function(socket){
 		  	  						info = stuff;
 		  	  					} else {
 		  	  						users = stuff
-		  	  						socket.emit('setCampaign', info);
+		  	  						console.log(users);
+		  	  						socket.emit('setCampaign', info, users);
 		  	  					}
 		  	  				}
 		  	  			}

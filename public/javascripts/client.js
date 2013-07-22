@@ -18,14 +18,17 @@ $(document).ready(function() {// begin jQuery
 
 	var socket = io.connect(window.location.hostname);
 
-	socket.on("setCampaign", function (info) {
+	socket.on("setCampaign", function (info, users) {
     var data = JSON.parse(info);
+    var users = JSON.parse(users);
     var logo = data.rows[0].logo;
     var bigLogo = data.rows[0].bigPic
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
-    var usersYest = data.rows[0].usersYest;
-    var usersNow = data.rows[0].usersNow;
+
+    var usersYest = users.rows[users.rows.length - 2].numUsers;
+    var usersNow = users.rows[users.rows.length - 1].numUsers;
+
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
     if (remaining < 1) {
@@ -44,12 +47,13 @@ $(document).ready(function() {// begin jQuery
                     'usersYest': usersYest,
                     'usersNow': usersNow,
                     'flipCount': 0,
-                    'flipPause': 0
+                    'flipPause': 0,
+                    'userData': users
                   });
     var cIndex = campaigns.length - 1;
 
     if(cIndex == 0){// fill in the featured panel
-      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
+      campaigns[cIndex].flipPause = (dayLength  - ((users.rows[0] - usersYest) )) / (usersNow - usersYest);
       $(".tick").text(usersYest);
 
       ticker = $(".tick").ticker({
