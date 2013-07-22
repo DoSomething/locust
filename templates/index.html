@@ -3,11 +3,13 @@
 <head>
   <title>locust swarm</title>
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/locust.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/tick.css">
 	<script type="text/javascript" src="/public/javascripts/jquery.min.js"></script>
+  <script src="/public/javascripts/jquery.ui.js" type="text/javascript"></script>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/public/javascripts/date.js"></script>
 	<script type="text/javascript" src="/public/javascripts/date-utils.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/jquery.flightboard.js"></script>
+  <script type="text/javascript" src="/public/javascripts/tick.js"></script>
   <script type="text/javascript" src="/public/javascripts/client.js"></script>
   <link rel="stylesheet" href="https://c308566.ssl.cf1.rackcdn.com/din-51.css" media="all" />
 </head>
@@ -28,12 +30,7 @@
         </div>
         <hr/>  
         <div class="board-container">      
-          <span class="left board-label">Current Active Users</span>
-          <div class="left">
-            <div id="flightboard">
-            </div>
-          </div>
-          <div style="clear:both"></div>
+          <p class="tick tick-flip"></p>
         </div>
       </div>
     </div>

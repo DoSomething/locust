@@ -87,32 +87,26 @@ body {
 }
 /* line 71, ../sass/_panels.sass */
 #featured .board-container {
-  width: 390px;
+  width: 700px;
   margin: 0 auto;
-}
-/* line 75, ../sass/_panels.sass */
-#featured .board-container .board-label {
-  display: inline-block;
-  margin-top: 5px;
-  margin-right: 10px;
-  font-size: 18pt;
+  background-color: green;
 }
 
-/* line 81, ../sass/_panels.sass */
+/* line 76, ../sass/_panels.sass */
 #sidebar {
   float: right;
   width: 220px;
   height: 530px;
   overflow: hidden;
 }
-/* line 87, ../sass/_panels.sass */
+/* line 82, ../sass/_panels.sass */
 #sidebar .small-panel {
   background-color: gray;
   text-align: center;
   position: relative;
   margin-bottom: 10px;
 }
-/* line 93, ../sass/_panels.sass */
+/* line 88, ../sass/_panels.sass */
 #sidebar .highlight {
   background-color: white;
 }

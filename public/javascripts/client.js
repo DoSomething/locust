@@ -2,6 +2,7 @@ var campaigns = [];
 var i = 0;
 var upNextI = 1;
 var numSmallPanels = 0;
+var ticker;
 
 //flip variables
 var dayLength = 135000;
@@ -42,34 +43,20 @@ $(document).ready(function() {// begin jQuery
                     'teaser': teaser,
                     'usersYest': usersYest,
                     'usersNow': usersNow,
-                    'messages': [],
                     'flipCount': 0,
                     'flipPause': 0
                   });
     var cIndex = campaigns.length - 1;
 
-    for (var x = usersYest; x <= usersNow; x++) {
-      var s = "" + x;
-      if(s.length < 7){
-        var difference = 7-s.length;
-        for(var y = 0; y < difference; y++){
-          s = "0" + s;
-        }
-      }
-      campaigns[cIndex].messages.push(s);
-    }
-
     if(cIndex == 0){// fill in the featured panel
-      $('#flightboard').flightboard({
-        maxLength: 7,
-        repeat: false,
-        sequential: false,
-        messages: campaigns[cIndex].messages
-      });
+      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
+      $(".tick").text(usersYest);
 
-      
-      campaigns[cIndex].flipPause = (dayLength  - (campaigns[cIndex].messages.length * 500)) / campaigns[cIndex].messages.length;
-      flipInterval = setInterval(flip, campaigns[cIndex].flipPause);
+      ticker = $(".tick").ticker({
+        incremental: 1,
+        delay: campaigns[cIndex].flipPause,
+        separators: true
+      });
 
       $('#featured').find('.title').text(campaigns[cIndex].name);
       $('#featured').find('.days-remaining').text(campaigns[cIndex].daysLeft);
@@ -79,9 +66,11 @@ $(document).ready(function() {// begin jQuery
       }else{
         $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser);
       }
+    }else{// add flip pause to all the small panel campaigns
+      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
     }
+
     // fill out a small panel for all campaigns   
-    campaigns[cIndex].flipPause = (dayLength  - (campaigns[cIndex].messages.length * 500)) / campaigns[cIndex].messages.length;
     numSmallPanels++;
     var panel = "<div id='" + cIndex + "' class='small-panel'>" +
                   campaigns[cIndex].name +
@@ -98,16 +87,6 @@ $(document).ready(function() {// begin jQuery
 
 }); // end jQuery scope
 
-function flip() {
-  //if we've reached our max value, stop flipping
-  if($("#flightboard").flightboard("current") == campaigns[i].messages[campaigns[i].messages.length - 1]){
-    clearInterval(flipInterval);
-    return;
-  }
-  campaigns[i].flipCount++;
-  $('#flightboard').flightboard('flip');
-}
-
 var rotateFeatured = setInterval(function() {
   $("#" + i).removeClass("highlight");
   i++;
@@ -117,7 +96,6 @@ var rotateFeatured = setInterval(function() {
   
   //must save a copy of i for global use reset at end of this function
   var saveI = i;
-  $('#flightboard').flightboard('destroy');
 
   // how many flips should I have completed?
   if(firstLoop){
@@ -126,35 +104,19 @@ var rotateFeatured = setInterval(function() {
     }
     campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
   }else{
-    campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length - 1)) / campaigns[i].flipPause);  
+    campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
   }
 
-  //splice the messages array to get rid of values that should have already shown
-  if(!(campaigns[i].flipCount >= campaigns[i].messages.length)){
-    campaigns[i].messages.splice(0, campaigns[i].flipCount);
-  }else{
-    var s = "" + campaigns[i].usersNow;
-    if(s.length < 7){
-      var difference = 7-s.length;
-      for(var y = 0; y < difference; y++){
-        s = "0" + s;
-      }
-    }
-    campaigns[i].messages = [s];
-  }
+  $(".tick").remove("");
+  $(".board-container").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
-  // reset the flip count
-  campaigns[i].flipCount = 0;
-
-  $('#flightboard').flightboard({
-    maxLength: 7,
-    repeat: false,
-    sequential: false,
-    messages: campaigns[i].messages
+  ticker = $(".tick").ticker({
+    incremental: 1,
+    delay: campaigns[i].flipPause,
+    separators: true
   });
+
   $("#" + i).addClass("highlight");
-  clearInterval(flipInterval);
-  flipInterval = setInterval(flip, campaigns[i].flipPause);
 
   // fill in the featured panel
   $('#featured').find('.title').text(campaigns[i].name);
