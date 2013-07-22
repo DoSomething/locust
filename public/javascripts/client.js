@@ -22,7 +22,6 @@ $(document).ready(function() {// begin jQuery
     var data = JSON.parse(info);
     var users = JSON.parse(users);
     var logo = data.rows[0].logo;
-    var bigLogo = data.rows[0].bigPic
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
 
@@ -41,7 +40,6 @@ $(document).ready(function() {// begin jQuery
 
     campaigns.push({'name': name,
                     'pic': logo,
-                    'bigPic': bigLogo,
                     'daysLeft': remaining,
                     'teaser': teaser,
                     'usersYest': usersYest,
@@ -64,7 +62,7 @@ $(document).ready(function() {// begin jQuery
 
       $('#featured').find('.title').text(campaigns[cIndex].name);
       $('#featured').find('.days-remaining').text(campaigns[cIndex].daysLeft);
-      $('#featured').find('.logo').find('img').attr("src", campaigns[cIndex].bigPic);
+      $('#featured').find('.logo').find('img').attr("src", campaigns[cIndex].pic);
       if(campaigns[cIndex].teaser.length > 145){
         $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser.substring(0, 142).concat("..."));  
       }else{
@@ -125,7 +123,7 @@ var rotateFeatured = setInterval(function() {
   // fill in the featured panel
   $('#featured').find('.title').text(campaigns[i].name);
   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#featured').find('.logo').find('img').attr("src", campaigns[i].bigPic);
+  $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
   if(campaigns[i].teaser.length > 145){
     $('#featured').find(".big-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
   }else{
