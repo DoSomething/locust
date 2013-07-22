@@ -2,12 +2,13 @@ var campaigns = [];
 var i = 0;
 var upNextI = 1;
 var numSmallPanels = 0;
+var ticker;
 
 //flip variables
 var dayLength = 135000;
 var rotatePause = 9000;
 var flipInterval, smallFlipInterval;
-var firstRotation = true;
+var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
 
@@ -16,7 +17,6 @@ $(document).ready(function() {// begin jQuery
   $("body").append("<div id='locust-load' style='width: 100%; height: " + loadH + "px; text-align: center; position: absolute; z-index: 99; top: 0px; left: 0px; background-color: rgba(0,0,0,1); padding-top: 100px'><img src='/public/locust.gif'/></div>");
 
 	var socket = io.connect(window.location.hostname);
-  var spIndex = 3;
 
 	socket.on("setCampaign", function (info) {
     var data = JSON.parse(info);
@@ -43,144 +43,80 @@ $(document).ready(function() {// begin jQuery
                     'teaser': teaser,
                     'usersYest': usersYest,
                     'usersNow': usersNow,
-                    'messages': [],
                     'flipCount': 0,
                     'flipPause': 0
                   });
+    var cIndex = campaigns.length - 1;
 
-    for (var x = usersYest; x <= usersNow; x++) {
-      var s = "" + x;
-      if(s.length < 7){
-        var difference = 7-s.length;
-        for(var y = 0; y < difference; y++){
-          s = "0" + s;
-        }
-      }
-      campaigns[campaigns.length -  1].messages.push(s);
-    }
+    if(cIndex == 0){// fill in the featured panel
+      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
+      $(".tick").text(usersYest);
 
-    if(campaigns.length == 1){// fill in the featured panel
-      $('#flightboard').flightboard({
-        maxLength: 7,
-        repeat: false,
-        sequential: false,
-        messages: campaigns[0].messages
+      ticker = $(".tick").ticker({
+        incremental: 1,
+        delay: campaigns[cIndex].flipPause,
+        separators: true
       });
 
-      
-      campaigns[0].flipPause = (dayLength  - (campaigns[0].messages.length * 500)) / campaigns[0].messages.length;
-      flipInterval = setInterval(flip, campaigns[0].flipPause);
-
-      $('#featured').find('.title').text(campaigns[0].name);
-      $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
-      $('#featured').find('.logo').find('img').attr("src", campaigns[0].bigPic);
-      if(campaigns[0].teaser.length > 145){
-        $('#featured').find(".big-teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
+      $('#featured').find('.title').text(campaigns[cIndex].name);
+      $('#featured').find('.days-remaining').text(campaigns[cIndex].daysLeft);
+      $('#featured').find('.logo').find('img').attr("src", campaigns[cIndex].bigPic);
+      if(campaigns[cIndex].teaser.length > 145){
+        $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser.substring(0, 142).concat("..."));  
       }else{
-        $('#featured').find(".big-teaser").text(campaigns[0].teaser);
+        $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser);
       }
+    }else{// add flip pause to all the small panel campaigns
+      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
     }
-    else if(campaigns.length == 2){// fill in the up next panel
-      $('#up-next-flightboard').flightboard({
-        lettersImage: "/public/img/flightBoardSmall.png",
-        lettersSize: [14,18],
-        maxLength: 7,
-        repeat: false,
-        sequential: false,
-        messages: campaigns[1].messages
-      });
 
-      campaigns[1].flipPause = (dayLength  - (campaigns[1].messages.length * 500)) / campaigns[1].messages.length;
-      smallFlipInterval = setInterval(smallFlip, campaigns[1].flipPause);
-
-      $('#up-next').find('.title').text(campaigns[1].name);
-      $('#up-next').find('.days-remaining').text(campaigns[1].daysLeft);
-      $('#up-next').find('.logo').find('img').attr("src", campaigns[1].pic);
+    // fill out a small panel for all campaigns   
+    numSmallPanels++;
+    var panel = "<div id='" + cIndex + "' class='small-panel'>" +
+                  campaigns[cIndex].name +
+                "</div>";
+    $("#sidebar").append(panel);
+    if(cIndex == 0){
+      $("#0").addClass("highlight");
     }
-    else{// fill in the small panels
-      campaigns[campaigns.length - 1].flipPause = (dayLength  - (campaigns[campaigns.length - 1].messages.length * 500)) / campaigns[campaigns.length - 1].messages.length;
-      if (spIndex >= 0) {
-        numSmallPanels++;
-        var panel = $('.' + "sp".concat(spIndex)).find('.with-margin');
-        panel.toggle();
-        panel.find("h3").text(campaigns[campaigns.length - 1].name);
-        panel.find(".small-days-remaining").text(campaigns[campaigns.length - 1].daysLeft);
-        if(campaigns[campaigns.length - 1].teaser.length > 145){
-          panel.find(".small-teaser").text(campaigns[campaigns.length - 1].teaser.substring(0, 142).concat("..."));  
-        }else{
-          panel.find(".small-teaser").text(campaigns[campaigns.length - 1].teaser);
-        }
-      }
-      spIndex--;
-      if(spIndex == -1){
-        // remove the loading screen
-        $("#locust-load").remove();
-      }
-    }
+    
+    // WARNING: this should only occur after they are all loaded
+    // remove the loading screen
+    $("#locust-load").remove();
 	});
 
 }); // end jQuery scope
 
-function flip() {
-  //if we've reached our max value, stop flipping
-  if($("#flightboard").flightboard("current") == campaigns[i].messages[campaigns[i].messages.length - 1]){
-    clearInterval(flipInterval);
-    return;
-  }
-  campaigns[i].flipCount++;
-  $('#flightboard').flightboard('flip');
-}
-
-function smallFlip() {
-  //if we've reached our max value, stop flipping
-  if($("#up-next-flightboard").flightboard("current") == campaigns[upNextI].messages[campaigns[upNextI].messages.length - 1]){
-    clearInterval(smallFlipInterval);
-    return;
-  }
-  campaigns[upNextI].flipCount++;
-  $('#up-next-flightboard').flightboard('flip');
-}
-
 var rotateFeatured = setInterval(function() {
+  $("#" + i).removeClass("highlight");
   i++;
   if (i >= campaigns.length) {
     i = 0;
   }
-  if((i + 1) >= campaigns.length){
-    upNextI = 0;
-  }else{
-    upNextI = i + 1;
-  }
   
   //must save a copy of i for global use reset at end of this function
   var saveI = i;
-  $('#flightboard').flightboard('destroy');
 
-  //splice the messages array to get rid of values that should have already shown
-  if(!(campaigns[i].flipCount >= campaigns[i].messages.length)){
-    campaigns[i].messages.splice(0, campaigns[i].flipCount);
-  }else{
-    var s = "" + campaigns[i].usersNow;
-    if(s.length < 7){
-      var difference = 7-s.length;
-      for(var y = 0; y < difference; y++){
-        s = "0" + s;
-      }
+  // how many flips should I have completed?
+  if(firstLoop){
+    if(i == campaigns.length - 1){ // off by 3!!!!!
+      firstLoop = false;
     }
-    campaigns[i].messages = [s];
+    campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
+  }else{
+    campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
   }
 
-  // reset the flip count
-  campaigns[i].flipCount = 0;
+  $(".tick").remove("");
+  $(".board-container").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
-  $('#flightboard').flightboard({
-    maxLength: 7,
-    repeat: false,
-    sequential: false,
-    messages: campaigns[i].messages
+  ticker = $(".tick").ticker({
+    incremental: 1,
+    delay: campaigns[i].flipPause,
+    separators: true
   });
-  clearInterval(flipInterval);
-  flipInterval = setInterval(flip, campaigns[i].flipPause);
+
+  $("#" + i).addClass("highlight");
 
   // fill in the featured panel
   $('#featured').find('.title').text(campaigns[i].name);
@@ -195,73 +131,6 @@ var rotateFeatured = setInterval(function() {
   if (i >= campaigns.length) {
     i = 0;
   }
-
-  //small flightboard
-  $('#up-next-flightboard').flightboard('destroy');
-
-  // how many flips should I have completed?
-  if(firstRotation){
-    if(upNextI == 0){
-      firstRotation = false;
-      campaigns[upNextI].flipCount += Math.floor((rotatePause * (campaigns.length - 2)) / campaigns[upNextI].flipPause);  
-    }else{
-      campaigns[upNextI].flipCount += Math.floor((rotatePause * (upNextI - 1)) / campaigns[upNextI].flipPause);    
-    }
-  }else{
-    campaigns[upNextI].flipCount += Math.floor((rotatePause * (campaigns.length - 2)) / campaigns[upNextI].flipPause);  
-  }
   
-
-  //splice the messages array to get rid of values that should have already shown
-  if(!(campaigns[upNextI].flipCount >= campaigns[upNextI].messages.length)){
-    campaigns[upNextI].messages.splice(0, campaigns[upNextI].flipCount);
-  }else{
-    var s = "" + campaigns[upNextI].usersNow;
-    if(s.length < 7){
-      var difference = 7-s.length;
-      for(var y = 0; y < difference; y++){
-        s = "0" + s;
-      }
-    }
-    campaigns[upNextI].messages = [s];
-  }
-
-  // reset the flip count
-  campaigns[upNextI].flipCount = 0;
-
-  $('#up-next-flightboard').flightboard({
-    lettersImage: "/public/img/flightBoardSmall.png",
-    lettersSize: [14,18],
-    maxLength: 7,
-    repeat: false,
-    sequential: false,
-    messages: campaigns[upNextI].messages
-  });
-  clearInterval(smallFlipInterval);
-  smallFlipInterval = setInterval(smallFlip, campaigns[upNextI].flipPause);
-
-  // fill in the up next panel
-  $('#up-next').find('.title').text(campaigns[i].name);
-  $('#up-next').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#up-next').find('.logo').find('img').attr("src", campaigns[i].pic);
-  i++;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
-
-  // fill in the small panels
-  for (var x = 3; x >= (4-numSmallPanels); x--) {
-    $('.' + "sp".concat(x)).find('.with-margin').find("h3").text(campaigns[i].name);
-    $('.' + "sp".concat(x)).find('.with-margin').find(".small-days-remaining").text(campaigns[i].daysLeft);
-    if(campaigns[i].teaser.length > 145){
-      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
-    }else{
-      $('.' + "sp".concat(x)).find('.with-margin').find(".small-teaser").text(campaigns[i].teaser);
-    }
-    i++;
-    if (i >= campaigns.length) {
-      i = 0;
-    }
-  }
   i = saveI;
 }, rotatePause);
