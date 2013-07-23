@@ -1,13 +1,11 @@
 var campaigns = [];
 var i = 0;
-var upNextI = 1;
 var numSmallPanels = 0;
 var ticker;
 
 //flip variables
 var dayLength = 135000;
 var rotatePause = 9000;
-var flipInterval, smallFlipInterval;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -51,30 +49,30 @@ $(document).ready(function() {// begin jQuery
     var cIndex = campaigns.length - 1;
 
     if(cIndex == 0){// fill in the featured panel
-      campaigns[cIndex].flipPause = (dayLength  - ((users.rows[0] - usersYest) )) / (usersNow - usersYest);
-      $(".tick").text(usersYest);
+      campaigns[0].flipPause = (dayLength  - ((campaigns[0].usersNow - campaigns[0].usersYest) )) / (campaigns[0].usersNow - campaigns[0].usersYest);
+      $(".tick").text(campaigns[0].usersYest);
 
       ticker = $(".tick").ticker({
         incremental: 1,
-        delay: campaigns[cIndex].flipPause,
+        delay: campaigns[0].flipPause,
         separators: true
       });
 
-      $('#featured').find('.title').text(campaigns[cIndex].name);
-      $('#featured').find('.days-remaining').text(campaigns[cIndex].daysLeft);
-      $('#featured').find('.logo').find('img').attr("src", campaigns[cIndex].pic);
-      if(campaigns[cIndex].teaser.length > 145){
-        $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser.substring(0, 142).concat("..."));  
+      $('#featured').find('.title').text(campaigns[0].name);
+      $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
+      $('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
+      if(campaigns[0].teaser.length > 145){
+        $('#featured').find(".big-teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
       }else{
-        $('#featured').find(".big-teaser").text(campaigns[cIndex].teaser);
+        $('#featured').find(".big-teaser").text(campaigns[0].teaser);
       }
     }else{// add flip pause to all the small panel campaigns
-      campaigns[cIndex].flipPause = (dayLength  - ((usersNow - usersYest) )) / (usersNow - usersYest);
+      campaigns[cIndex].flipPause = (dayLength  - ((campaigns[cIndex].usersNow - campaigns[cIndex].usersYest) )) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
     }
 
     // fill out a small panel for all campaigns   
     numSmallPanels++;
-    var panel = "<div id='" + cIndex + "' class='small-panel'>" +
+    var panel = "<div id='" + cIndex + "' class='small-panel small-font'>" +
                   campaigns[cIndex].name +
                 "</div>";
     $("#sidebar").append(panel);
