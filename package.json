@@ -1,6 +1,6 @@
 {
 	"name": "locust",
-	"version": "0.1.0",
+	"version": "0.3.0",
 	"dependencies": {
 		"express": "3.0.x",
 		"any-db": "0.3.x",
@@ -10,6 +10,6 @@
 		"socket.io": "0.9.x",
 		"request": "2.22.x",
 		"date-utils": "1.2.x",
-		"jsdom": "0.7.x"
+		"scp2": "0.1.3"
 	}
 }

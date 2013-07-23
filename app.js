@@ -6,7 +6,24 @@ var anyDB = require('any-db');
 var conn = anyDB.createConnection('sqlite3://campaigns.db');
 var engines = require('consolidate');
 var request = require('request');
+var client = require('scp2');
 require('date-utils');
+
+// credentials for scp request
+var credentials = require('./credentials.json');
+
+client.scp({
+    host: credentials.host,
+    username: credentials.username,
+    password: credentials.password,
+    path: credentials.path
+}, './', function(err) {
+	if(err != null){
+		console.log(err);
+	}else{
+		console.log("SUCCESS: Copied campaign_stats.json to local machine.");
+	}
+});
 
 var io = require('socket.io').listen(server);
 io.set('log level', 1); 
@@ -107,7 +124,6 @@ io.sockets.on('connection', function(socket){
 		  	  						info = stuff;
 		  	  					} else {
 		  	  						users = stuff
-		  	  						console.log(users);
 		  	  						socket.emit('setCampaign', info, users);
 		  	  					}
 		  	  				}
