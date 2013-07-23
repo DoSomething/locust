@@ -22,68 +22,118 @@ body
 .right
   float: right
 
-// DoSomething.org logo
-#ds-logo
-  margin: 0 0 10px -5px
-  height: 180px
-  width: 220px
+.small-font
+  font-size: $small-font
 
-  img
-    width: 100%
+.medium-font
+  font-size: $medium-font
 
-// featured panel
-#featured
-  width: 740px
+.large-font
+  font-size: $large-font
+
+.regular
+  font-family: "din-web-reg"
+
+.condensed
+  font-family: "din-web"
+
+.bold
+  font-weight: 600
+
+#sidebar
+  width: 250px
   height: 720px
-  background-color: $featured-background-color
+  overflow: hidden
+  background-color: #F5F5F5
+  text-align: center
 
-  .logo
-    width: 100%
-    text-align: center
-    min-height: 250px
-    overflow: hidden
+  // DoSomething.org logo
+  #ds-logo
+    margin: 20px auto 20px auto
+    height: 140px
+    width: 176px
 
     img
       width: 100%
-      max-width: 100%
-      max-height: 250px
 
-  .info
-    width: 100%
+  span
+    text-transform: uppercase
 
-    .title
-      font-size: 38pt
-
-    .days-remaining
-      font-size: 22pt
-      margin-top: 14px
-
-  #teaser
-    width: 500px
-    height: 75px
-    margin: auto
-  
-    .big-teaser
-      font-size: 16pt
-      display: inline-block
-      text-align: justify
-
-  .board-container
-    width: 700px
-    margin: 0 auto
-    background-color: green
-
-#sidebar
-  float: right
-  width: 220px
-  height: 530px
-  overflow: hidden
+  hr
+    width: 85%
+    margin: 0 auto 10px auto
+    border: solid #979797 1px
 
   .small-panel
-    background-color: $small-panel-background-color
     text-align: center
     position: relative
     margin-bottom: 10px
+    font-size: $small-font // this needs to be removed
+    text-transform: uppercase
+    padding: 7px 0 4px 0
 
   .highlight
-    background-color: $small-panel-background-highlight-color
+    background-color: $featured-color
+
+// featured panel
+#featured
+  width: 710px
+  height: 720px
+  background-color: $featured-color
+
+  .info
+    width: 100%
+    background-color: $subsection-color
+    height: 108px
+    overflow: hidden
+
+    .title
+      margin: 14px 0 0 14px
+      display: inline-block
+      color: $title-color
+      text-transform: uppercase
+
+    .days-remaining
+      margin: 8px 0 0 14px
+      display: inline-block
+
+    span
+      line-height: 1em
+
+    .logo
+      width: 216px
+      text-align: center
+      height: 108px
+      overflow: hidden
+      background-color: $image-color
+
+      img
+        width: 100%
+        max-width: 100%
+        max-height: 108px
+
+  .campaign
+    width: 100%
+    background-color: $subsection-color
+    margin-top: 20px
+
+    span
+      display: inline-block
+
+    .title
+      color: $title-color
+      margin: 14px 14px 10px 14px
+
+    .teaser
+      margin: 0 14px 14px 14px
+      line-height: 1em
+    
+  .data-display
+    width: 100%
+    background-color: $subsection-color
+    margin-top: 20px
+
+    .title
+      display: inline-block
+      color: $title-color
+      margin: 14px 14px 10px 14px
