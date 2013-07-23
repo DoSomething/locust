@@ -1,7 +1,7 @@
 /* line 2, ../sass/_panels.sass */
 body {
   margin: 0;
-  background-color: white;
+  background-color: whitesmoke;
   font-family: "din-web";
 }
 
@@ -32,22 +32,22 @@ body {
 
 /* line 25, ../sass/_panels.sass */
 .small-font {
-  font-size: 24pt;
+  font-size: 18pt;
 }
 
 /* line 28, ../sass/_panels.sass */
 .medium-font {
-  font-size: 36pt;
+  font-size: 26pt;
 }
 
 /* line 31, ../sass/_panels.sass */
 .large-font {
-  font-size: 54pt;
+  font-size: 34pt;
 }
 
 /* line 34, ../sass/_panels.sass */
 .regular {
-  font-family: "din-web-regular";
+  font-family: "din-web-reg";
 }
 
 /* line 37, ../sass/_panels.sass */
@@ -57,90 +57,123 @@ body {
 
 /* line 40, ../sass/_panels.sass */
 .bold {
-  font-weight: bold;
+  font-weight: 600;
 }
 
-/* line 44, ../sass/_panels.sass */
-#featured {
-  width: 710px;
-  height: 720px;
-  background-color: #3892e3;
-}
-/* line 49, ../sass/_panels.sass */
-#featured .logo {
-  width: 216px;
-  text-align: center;
-  height: 108px;
-  overflow: hidden;
-  background-color: white;
-}
-/* line 56, ../sass/_panels.sass */
-#featured .logo img {
-  width: 100%;
-  max-width: 100%;
-  max-height: 108px;
-}
-/* line 61, ../sass/_panels.sass */
-#featured .info {
-  width: 100%;
-}
-/* line 64, ../sass/_panels.sass */
-#featured .info .title {
-  font-size: 38pt;
-}
-/* line 67, ../sass/_panels.sass */
-#featured .info .days-remaining {
-  font-size: 22pt;
-  margin-top: 14px;
-}
-/* line 71, ../sass/_panels.sass */
-#featured #teaser {
-  width: 500px;
-  height: 75px;
-  margin: auto;
-}
-/* line 76, ../sass/_panels.sass */
-#featured #teaser .big-teaser {
-  font-size: 16pt;
-  display: inline-block;
-  text-align: justify;
-}
-/* line 81, ../sass/_panels.sass */
-#featured .board-container {
-  width: 700px;
-  margin: 0 auto;
-  background-color: green;
-}
-
-/* line 86, ../sass/_panels.sass */
+/* line 43, ../sass/_panels.sass */
 #sidebar {
-  float: right;
   width: 250px;
   height: 720px;
   overflow: hidden;
   background-color: whitesmoke;
   text-align: center;
 }
-/* line 95, ../sass/_panels.sass */
+/* line 51, ../sass/_panels.sass */
 #sidebar #ds-logo {
   margin: 20px auto 20px auto;
   height: 140px;
   width: 176px;
 }
-/* line 100, ../sass/_panels.sass */
+/* line 56, ../sass/_panels.sass */
 #sidebar #ds-logo img {
   width: 100%;
 }
-/* line 103, ../sass/_panels.sass */
+/* line 59, ../sass/_panels.sass */
+#sidebar span {
+  text-transform: uppercase;
+}
+/* line 62, ../sass/_panels.sass */
 #sidebar hr {
   width: 85%;
   margin: 0 auto 10px auto;
   border: solid #979797 1px;
 }
-/* line 108, ../sass/_panels.sass */
+/* line 67, ../sass/_panels.sass */
 #sidebar .small-panel {
   text-align: center;
   position: relative;
   margin-bottom: 10px;
-  font-size: 24pt;
+  font-size: 18pt;
+  text-transform: uppercase;
+  padding: 7px 0 4px 0;
+}
+/* line 75, ../sass/_panels.sass */
+#sidebar .highlight {
+  background-color: #3892e3;
+}
+
+/* line 79, ../sass/_panels.sass */
+#featured {
+  width: 710px;
+  height: 720px;
+  background-color: #3892e3;
+}
+/* line 84, ../sass/_panels.sass */
+#featured .info {
+  width: 100%;
+  background-color: whitesmoke;
+  height: 108px;
+  overflow: hidden;
+}
+/* line 90, ../sass/_panels.sass */
+#featured .info .title {
+  margin: 14px 0 0 14px;
+  display: inline-block;
+  color: #3892e3;
+  text-transform: uppercase;
+}
+/* line 96, ../sass/_panels.sass */
+#featured .info .days-remaining {
+  margin: 8px 0 0 14px;
+  display: inline-block;
+}
+/* line 100, ../sass/_panels.sass */
+#featured .info span {
+  line-height: 1em;
+}
+/* line 103, ../sass/_panels.sass */
+#featured .info .logo {
+  width: 216px;
+  text-align: center;
+  height: 108px;
+  overflow: hidden;
+  background-color: white;
+}
+/* line 110, ../sass/_panels.sass */
+#featured .info .logo img {
+  width: 100%;
+  max-width: 100%;
+  max-height: 108px;
+}
+/* line 115, ../sass/_panels.sass */
+#featured .campaign {
+  width: 100%;
+  background-color: whitesmoke;
+  margin-top: 20px;
+}
+/* line 120, ../sass/_panels.sass */
+#featured .campaign span {
+  display: inline-block;
+}
+/* line 123, ../sass/_panels.sass */
+#featured .campaign .title {
+  color: #3892e3;
+  margin: 14px 14px 10px 14px;
+}
+/* line 127, ../sass/_panels.sass */
+#featured .campaign .teaser {
+  margin: 0 14px 14px 14px;
+  line-height: 1em;
+}
+/* line 131, ../sass/_panels.sass */
+#featured .data-display {
+  width: 100%;
+  background-color: whitesmoke;
+  margin-top: 20px;
+}
+/* line 136, ../sass/_panels.sass */
+#featured .data-display .title {
+  display: inline-block;
+  color: #3892e3;
+  margin: 14px 14px 10px 14px;
 }

@@ -58,13 +58,13 @@ $(document).ready(function() {// begin jQuery
         separators: true
       });
 
-      $('#featured').find('.title').text(campaigns[0].name);
+      $('#featured').find('.info').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       $('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
       if(campaigns[0].teaser.length > 145){
-        $('#featured').find(".big-teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
+        $('#featured').find(".teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
       }else{
-        $('#featured').find(".big-teaser").text(campaigns[0].teaser);
+        $('#featured').find(".teaser").text(campaigns[0].teaser);
       }
     }else{// add flip pause to all the small panel campaigns
       campaigns[cIndex].flipPause = (dayLength  - ((campaigns[cIndex].usersNow - campaigns[cIndex].usersYest) )) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
@@ -107,8 +107,8 @@ var rotateFeatured = setInterval(function() {
     campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
   }
 
-  $(".tick").remove("");
-  $(".board-container").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
+  $(".tick").remove();
+  $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
   ticker = $(".tick").ticker({
     incremental: 1,
@@ -119,13 +119,13 @@ var rotateFeatured = setInterval(function() {
   $("#" + i).addClass("highlight");
 
   // fill in the featured panel
-  $('#featured').find('.title').text(campaigns[i].name);
+  $('#featured').find('.info').find('.title').text(campaigns[i].name);
   $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
   $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
   if(campaigns[i].teaser.length > 145){
-    $('#featured').find(".big-teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
+    $('#featured').find(".teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
   }else{
-    $('#featured').find(".big-teaser").text(campaigns[i].teaser);
+    $('#featured').find(".teaser").text(campaigns[i].teaser);
   }
   i++;
   if (i >= campaigns.length) {

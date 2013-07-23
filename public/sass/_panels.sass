@@ -32,59 +32,15 @@ body
   font-size: $large-font
 
 .regular
-  font-family: "din-web-regular"
+  font-family: "din-web-reg"
 
 .condensed
   font-family: "din-web"
 
 .bold
-  font-weight: bold
-
-// featured panel
-#featured
-  width: 710px
-  height: 720px
-  background-color: $featured-color
-
-  .logo
-    width: 216px
-    text-align: center
-    height: 108px
-    overflow: hidden
-    background-color: $image-color
-
-    img
-      width: 100%
-      max-width: 100%
-      max-height: 108px
-
-  .info
-    width: 100%
-
-    .title
-      font-size: 38pt
-
-    .days-remaining
-      font-size: 22pt
-      margin-top: 14px
-
-  #teaser
-    width: 500px
-    height: 75px
-    margin: auto
-  
-    .big-teaser
-      font-size: 16pt
-      display: inline-block
-      text-align: justify
-
-  .board-container
-    width: 700px
-    margin: 0 auto
-    background-color: green
+  font-weight: 600
 
 #sidebar
-  float: right
   width: 250px
   height: 720px
   overflow: hidden
@@ -100,6 +56,9 @@ body
     img
       width: 100%
 
+  span
+    text-transform: uppercase
+
   hr
     width: 85%
     margin: 0 auto 10px auto
@@ -109,4 +68,72 @@ body
     text-align: center
     position: relative
     margin-bottom: 10px
-    font-size: $small-font
+    font-size: $small-font // this needs to be removed
+    text-transform: uppercase
+    padding: 7px 0 4px 0
+
+  .highlight
+    background-color: $featured-color
+
+// featured panel
+#featured
+  width: 710px
+  height: 720px
+  background-color: $featured-color
+
+  .info
+    width: 100%
+    background-color: $subsection-color
+    height: 108px
+    overflow: hidden
+
+    .title
+      margin: 14px 0 0 14px
+      display: inline-block
+      color: $title-color
+      text-transform: uppercase
+
+    .days-remaining
+      margin: 8px 0 0 14px
+      display: inline-block
+
+    span
+      line-height: 1em
+
+    .logo
+      width: 216px
+      text-align: center
+      height: 108px
+      overflow: hidden
+      background-color: $image-color
+
+      img
+        width: 100%
+        max-width: 100%
+        max-height: 108px
+
+  .campaign
+    width: 100%
+    background-color: $subsection-color
+    margin-top: 20px
+
+    span
+      display: inline-block
+
+    .title
+      color: $title-color
+      margin: 14px 14px 10px 14px
+
+    .teaser
+      margin: 0 14px 14px 14px
+      line-height: 1em
+    
+  .data-display
+    width: 100%
+    background-color: $subsection-color
+    margin-top: 20px
+
+    .title
+      display: inline-block
+      color: $title-color
+      margin: 14px 14px 10px 14px
