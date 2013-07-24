@@ -7,10 +7,14 @@ var conn = anyDB.createConnection('sqlite3://campaigns.db');
 var engines = require('consolidate');
 var request = require('request');
 var client = require('scp2');
+var fs = require('fs');
 require('date-utils');
 
 // credentials for scp request
 var credentials = require('./credentials.json');
+
+// json of campaign stats
+var campaignStats;
 
 client.scp({
     host: credentials.host,
@@ -22,8 +26,24 @@ client.scp({
 		console.log(err);
 	}else{
 		console.log("SUCCESS: Copied campaign_stats.json to local machine.");
+		//campaignStats = require('./campaign_stats.json');
+		fs.readFile("./campaign_stats.json", "utf8", function (err,data) {
+		  if (err) {
+		    return console.log(err);
+		  }else{
+		  	data = data.replace(/\'/g, "\"");
+		  	fs.writeFile("./campaign_stats.json", data, function(){
+		  		console.log("Replaced all single quotes.");
+		  		campaignStats = require('./campaign_stats.json');
+		  		//console.log(campaignStats.campaigns_pull.campaigns[0].total_sign_ups_all);
+		  	});
+		  }
+		});
+
 	}
 });
+
+
 
 var io = require('socket.io').listen(server);
 io.set('log level', 1); 
