@@ -53,7 +53,7 @@ app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
 app.use('/public', express.static(__dirname + '/public'));
 
-conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, bigPic TEXT, teaser TEXT, startDate TEXT, endDate TEXT, usersYest INTEGER, usersNow INTEGER)')
+conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, teaser TEXT, startDate TEXT, endDate TEXT)')
 	.on('end', function(){
 		console.log('Made campaigns table.');
 	});
@@ -78,16 +78,6 @@ io.sockets.on('connection', function(socket){
 		  	  			var campaign = JSON.parse(body);
 		  	  			//console.log(campaign);
 
-		  	  			var bigPic;
-		  	  			if (campaign['field_campaign_promo_image']['und'] == undefined) {
-		  	  				bigPic = '/public/ds-logo.png';
-		  	  			} else {
-		  	  				bigPic = campaign['field_campaign_promo_image']['und'][0]['uri'];
-		  	  				bigPic = bigPic.replace("public://", "");
-		  	  				bigPic = "http://www.dosomething.org/files/".concat(bigPic);
-		  	  				//console.log(bigPic);
-		  	  			}
-
 		  	  			var endDate = Date.parse(campaign['field_campain_date']['und'][0]['value2']);
 
 		  	  			if (Date.equals(endDate, Date.yesterday())) { //if campaign has ended
@@ -109,6 +99,8 @@ io.sockets.on('connection', function(socket){
 			  
 			  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], Date.today()], function(error, result) {
 			  	  				if (result.rowCount == 0) {
+			  	  					usersNow = campaignStats.campaigns_pull.campaigns[0].total_sign_ups_all;
+			  	  					console.log(usersNow);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 55, Date.yesterday()]);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
 			  	  				}
@@ -116,20 +108,15 @@ io.sockets.on('connection', function(socket){
 
 			  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
 			  	  			  if(result.rowCount != 0){
-			  	  			    var usersYest = result.rows[0].usersNow;
-			  	  			    if(usersYest == usersNow){
-			  	  			    	usersYest = result.rows[0].usersYest;
-			  	  			    }
-			  	  			    // WARNING oldUsersNow must be placed into the update statment below
-			  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, usersYest=$5, usersNow=$6, logo=$7, bigPic=$8  WHERE nid=$9', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersYest, usersNow, pic, bigPic, campaign['nid']]);
+			  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, logo=$5 WHERE nid=$6', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic, campaign['nid']]);
 			  	  			  }else{
 			  	  			  	usersNow = 56; // REMOVE for production
-			  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, usersNow, logo, bigPic) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', 
-			  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], usersNow, pic, bigPic]);
+			  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, logo) VALUES ($1, $2, $3, $4, $5, $6)', 
+			  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic]);
 			  	  			  }
 			  	  			});
 							
-							conn.query('SELECT title, logo, bigPic, teaser, endDate, usersYest, usersNow FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+							conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
 								send(JSON.stringify(result), true);
 							});
 
