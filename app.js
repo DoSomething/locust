@@ -101,7 +101,7 @@ io.sockets.on('connection', function(socket){
 			  	  				if (result.rowCount == 0) {
 			  	  					usersNow = campaignStats.campaigns_pull.campaigns[0].total_sign_ups_all;
 			  	  					console.log(usersNow);
-			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 55, Date.yesterday()]);
+			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 125000, Date.yesterday()]);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
 			  	  				}
 			  	  			});

@@ -4,7 +4,7 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 135000;
+var dayLength = 13000;
 var rotatePause = 9000;
 var firstLoop = true;
 
@@ -44,7 +44,8 @@ $(document).ready(function() {// begin jQuery
                     'usersNow': usersNow,
                     'flipCount': 0,
                     'flipPause': 0,
-                    'userData': users
+                    'userData': users,
+                    'allDone': false
                   });
     var cIndex = campaigns.length - 1;
 
@@ -85,52 +86,75 @@ $(document).ready(function() {// begin jQuery
     $("#locust-load").remove();
 	});
 
-}); // end jQuery scope
-
-var rotateFeatured = setInterval(function() {
-  $("#" + i).removeClass("highlight");
-  i++;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
-  
-  //must save a copy of i for global use reset at end of this function
-  var saveI = i;
-
-  // how many flips should I have completed?
-  if(firstLoop){
-    if(i == campaigns.length - 1){ // off by 3!!!!!
-      firstLoop = false;
+  var rotateFeatured = setInterval(function() {
+    $("#" + i).removeClass("highlight");
+    i++;
+    if (i >= campaigns.length) {
+      i = 0;
     }
-    campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
-  }else{
-    campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
-  }
+    
+    //must save a copy of i for global use reset at end of this function
+    var saveI = i;
 
-  $(".tick").remove();
-  $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
+    // how many flips should I have completed?
+    if(firstLoop){
+      if(i == campaigns.length - 1){ // off by 3!!!!!
+        firstLoop = false;
+      }
+      campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
+    }else{
+      campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
+    }
 
-  ticker = $(".tick").ticker({
-    incremental: 1,
-    delay: campaigns[i].flipPause,
-    separators: true
-  });
+    // set a ticker as all done before even loading it
+    if((campaigns[i].flipCount + campaigns[i].usersYest) >= campaigns[i].usersNow){
+      campaigns[i].allDone = true;
+    }
 
-  $("#" + i).addClass("highlight");
+    // if all done then set flip count to maximum flips (effectively rendering value as usersNow)
+    if(campaigns[i].allDone){
+      campaigns[i].flipCount = campaigns[i].usersNow - campaigns[i].usersYest;
+    }
 
-  // fill in the featured panel
-  $('#featured').find('.info').find('.title').text(campaigns[i].name);
-  $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-  $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
-  if(campaigns[i].teaser.length > 145){
-    $('#featured').find(".teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
-  }else{
-    $('#featured').find(".teaser").text(campaigns[i].teaser);
-  }
-  i++;
-  if (i >= campaigns.length) {
-    i = 0;
-  }
-  
-  i = saveI;
-}, rotatePause);
+    $(".tick").remove();
+    $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
+
+    $(".tick").on("DOMSubtreeModified", function() {
+      console.log(ticker[0].value >= campaigns[i].usersNow);
+      if(ticker != null && ticker[0].value >= campaigns[i].usersNow){
+        ticker[0].stop();
+        campaigns[i].allDone = true;
+      }
+    });
+
+    ticker = $(".tick").ticker({
+      incremental: 1,
+      delay: campaigns[i].flipPause,
+      separators: true
+    });
+
+    // don't do any flips at all
+    if(campaigns[i].allDone){
+      ticker[0].stop();
+    }
+
+    $("#" + i).addClass("highlight");
+
+    // fill in the featured panel
+    $('#featured').find('.info').find('.title').text(campaigns[i].name);
+    $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
+    $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
+    if(campaigns[i].teaser.length > 145){
+      $('#featured').find(".teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
+    }else{
+      $('#featured').find(".teaser").text(campaigns[i].teaser);
+    }
+    i++;
+    if (i >= campaigns.length) {
+      i = 0;
+    }
+    
+    i = saveI;
+  }, rotatePause);
+
+}); // end jQuery scope
