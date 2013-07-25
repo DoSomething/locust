@@ -92,6 +92,7 @@
     Tick.prototype.render = function() {
       var container, containers, digits, i, _len, _ref, _results;
       digits = String(this.value).split('');
+
       containers = this.element.children(':not(.tick-separator)');
       if (digits.length !== containers.length) {
         for (i = 0, _ref = digits.length - containers.length; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
@@ -106,6 +107,7 @@
         container = containers[i];
         _results.push(this.update_container(container, digits[i]));
       }
+      //console.log(_results);
       return _results;
     };
 

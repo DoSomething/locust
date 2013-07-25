@@ -4,8 +4,8 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 240000;
-var rotatePause = 9000;
+var dayLength = 2880000;
+var rotatePause = 10000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -23,7 +23,11 @@ $(document).ready(function() {// begin jQuery
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
 
-    var usersYest = users.rows[users.rows.length - 2].numUsers;
+    if(users.rows.length < 2){
+      var usersYest = 0;
+    }else{
+      var usersYest = users.rows[users.rows.length - 2].numUsers;
+    }
     var usersNow = users.rows[users.rows.length - 1].numUsers;
 
 		var end = Date.parse(data.rows[0].endDate);
@@ -50,7 +54,7 @@ $(document).ready(function() {// begin jQuery
     var cIndex = campaigns.length - 1;
 
     if(cIndex == 0){// fill in the featured panel
-      campaigns[0].flipPause = (dayLength  - ((campaigns[0].usersNow - campaigns[0].usersYest) )) / (campaigns[0].usersNow - campaigns[0].usersYest);
+      campaigns[0].flipPause = (dayLength) / (campaigns[0].usersNow - campaigns[0].usersYest);
       $(".tick").text(campaigns[0].usersYest);
 
       ticker = $(".tick").ticker({
@@ -68,7 +72,7 @@ $(document).ready(function() {// begin jQuery
         $('#featured').find(".teaser").text(campaigns[0].teaser);
       }
     }else{// add flip pause to all the small panel campaigns
-      campaigns[cIndex].flipPause = (dayLength  - ((campaigns[cIndex].usersNow - campaigns[cIndex].usersYest) )) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
+      campaigns[cIndex].flipPause = (dayLength) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
     }
 
     // fill out a small panel for all campaigns   
@@ -86,6 +90,10 @@ $(document).ready(function() {// begin jQuery
     $("#locust-load").remove();
 	});
 
+  $("#ds-logo").on("click", function(){
+    ticker[0].stop();
+  });
+
   var rotateFeatured = setInterval(function() {
     $("#" + i).removeClass("highlight");
     i++;
@@ -98,14 +106,9 @@ $(document).ready(function() {// begin jQuery
       if(i == campaigns.length - 1){
         firstLoop = false;
       }
-      console.log(campaigns[i].name + Math.floor((rotatePause * (i)) / campaigns[i].flipPause))
       campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);   
-      console.log(campaigns[i].flipCount);
     }else{
-      console.log(campaigns[i].flipCount); 
       campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause); 
-      console.log(campaigns[i].name + " " + campaigns[i].flipCount + " = " + Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause) + " " + rotatePause + " " + campaigns.length + " " + campaigns[i].flipPause);
- 
     }
 
 
@@ -118,15 +121,18 @@ $(document).ready(function() {// begin jQuery
     }
 
     $(".tick").remove();
-    $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
+    $("#tick-holder").prepend("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
-    //console.log(campaigns[k].name + " @ " + (campaigns[k].usersYest + campaigns[k].flipCount));
-    //console.log(campaigns[i].name + " @ " + (campaigns[i].usersYest + campaigns[i].flipCount));
     ticker = $(".tick").ticker({
       incremental: 1,
       delay: campaigns[i].flipPause,
       separators: true
     });
+
+    // don't do any flips at all
+    if(campaigns[i].allDone){
+      ticker[0].stop();
+    }
 
     $(".tick").on("DOMSubtreeModified", function() {
       if(ticker != null && ticker[0].value >= campaigns[i].usersNow){
@@ -134,11 +140,6 @@ $(document).ready(function() {// begin jQuery
         campaigns[i].allDone = true;
       }
     });
-
-    // don't do any flips at all
-    if(campaigns[i].allDone){
-      ticker[0].stop();
-    }
 
     $("#" + i).addClass("highlight");
 

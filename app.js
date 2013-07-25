@@ -104,12 +104,20 @@ io.sockets.on('connection', function(socket){
 			  	  							console.log(usersNow);
 			  	  							console.log("real title - " + campaign['title']);
 			  	  						} else {
-			  	  							
-			  	  							//console.log("real title - " + campaign['title']);
-			  	  							//console.log("josh title - " + campaignStats.campaigns_pull.campaigns[i].name);
+			  	  							if(campaign['title'] == "25,000 Women" && campaignStats.campaigns_pull.campaigns[i].name == "25k Women"){
+			  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+				  	  							console.log(usersNow);
+				  	  							console.log("real title - " + campaign['title']);
+			  	  							}
+			  	  							if(campaign['title'] == "Puppy Text" && campaignStats.campaigns_pull.campaigns[i].name == "Puppy_Text"){
+			  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+				  	  							console.log(usersNow);
+				  	  							console.log("real title - " + campaign['title']);
+			  	  							}
 			  	  						}
 			  	  					}
-			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday()]);
+			  	  					// fake yesteday's data
+			  	  					//conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday()]);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
 			  	  				}
 			  	  			});
