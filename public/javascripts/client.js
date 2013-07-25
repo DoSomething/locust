@@ -4,7 +4,7 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 120000;
+var dayLength = 240000;
 var rotatePause = 9000;
 var firstLoop = true;
 
@@ -88,49 +88,56 @@ $(document).ready(function() {// begin jQuery
 
   var rotateFeatured = setInterval(function() {
     $("#" + i).removeClass("highlight");
+    var k;
+    k = i;
     i++;
     if (i >= campaigns.length) {
       i = 0;
     }
-    
-    //must save a copy of i for global use reset at end of this function
-    var saveI = i;
 
     // how many flips should I have completed?
     if(firstLoop){
-      if(i == campaigns.length - 1){ // off by 3!!!!!
+      if(i == campaigns.length - 1){
         firstLoop = false;
       }
       campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
+      campaigns[k].flipCount += Math.floor((rotatePause * (k)) / campaigns[k].flipPause);  
     }else{
+      campaigns[k].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[k].flipPause);  
       campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
     }
+
+    // will be removed
+    if((campaigns[k].flipCount + campaigns[k].usersYest) >= campaigns[k].usersNow){
+      campaigns[k].allDone = true;
+      // if all done then set flip count to maximum flips (effectively rendering value as usersNow)
+      campaigns[k].flipCount = campaigns[k].usersNow - campaigns[k].usersYest;
+    }
+
 
     // set a ticker as all done before even loading it
     if((campaigns[i].flipCount + campaigns[i].usersYest) >= campaigns[i].usersNow){
       campaigns[i].allDone = true;
-    }
-
-    // if all done then set flip count to maximum flips (effectively rendering value as usersNow)
-    if(campaigns[i].allDone){
+      // if all done then set flip count to maximum flips (effectively rendering value as usersNow)
       campaigns[i].flipCount = campaigns[i].usersNow - campaigns[i].usersYest;
     }
 
     $(".tick").remove();
     $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
-    $(".tick").on("DOMSubtreeModified", function() {
-      console.log(ticker[0].value >= campaigns[i].usersNow);
-      if(ticker != null && ticker[0].value >= campaigns[i].usersNow){
-        ticker[0].stop();
-        campaigns[i].allDone = true;
-      }
-    });
-
+    console.log(campaigns[k].name + " @ " + (campaigns[k].usersYest + campaigns[k].flipCount));
+    console.log(campaigns[i].name + " @ " + (campaigns[i].usersYest + campaigns[i].flipCount));
     ticker = $(".tick").ticker({
       incremental: 1,
       delay: campaigns[i].flipPause,
       separators: true
+    });
+
+    $(".tick").on("DOMSubtreeModified", function() {
+      if(ticker != null && ticker[0].value >= campaigns[i].usersNow){
+        ticker[0].stop();
+        campaigns[i].allDone = true;
+      }
     });
 
     // don't do any flips at all
@@ -149,12 +156,6 @@ $(document).ready(function() {// begin jQuery
     }else{
       $('#featured').find(".teaser").text(campaigns[i].teaser);
     }
-    i++;
-    if (i >= campaigns.length) {
-      i = 0;
-    }
-    
-    i = saveI;
   }, rotatePause);
 
 }); // end jQuery scope
