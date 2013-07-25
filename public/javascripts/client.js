@@ -88,8 +88,6 @@ $(document).ready(function() {// begin jQuery
 
   var rotateFeatured = setInterval(function() {
     $("#" + i).removeClass("highlight");
-    var k;
-    k = i;
     i++;
     if (i >= campaigns.length) {
       i = 0;
@@ -100,19 +98,16 @@ $(document).ready(function() {// begin jQuery
       if(i == campaigns.length - 1){
         firstLoop = false;
       }
-      campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);  
-      campaigns[k].flipCount += Math.floor((rotatePause * (k)) / campaigns[k].flipPause);  
+      console.log(campaigns[i].name + Math.floor((rotatePause * (i)) / campaigns[i].flipPause))
+      campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);   
+      console.log(campaigns[i].flipCount);
     }else{
-      campaigns[k].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[k].flipPause);  
-      campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause);  
+      console.log(campaigns[i].flipCount); 
+      campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause); 
+      console.log(campaigns[i].name + " " + campaigns[i].flipCount + " = " + Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause) + " " + rotatePause + " " + campaigns.length + " " + campaigns[i].flipPause);
+ 
     }
 
-    // will be removed
-    if((campaigns[k].flipCount + campaigns[k].usersYest) >= campaigns[k].usersNow){
-      campaigns[k].allDone = true;
-      // if all done then set flip count to maximum flips (effectively rendering value as usersNow)
-      campaigns[k].flipCount = campaigns[k].usersNow - campaigns[k].usersYest;
-    }
 
 
     // set a ticker as all done before even loading it
@@ -125,8 +120,8 @@ $(document).ready(function() {// begin jQuery
     $(".tick").remove();
     $(".numbers").append("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
 
-    console.log(campaigns[k].name + " @ " + (campaigns[k].usersYest + campaigns[k].flipCount));
-    console.log(campaigns[i].name + " @ " + (campaigns[i].usersYest + campaigns[i].flipCount));
+    //console.log(campaigns[k].name + " @ " + (campaigns[k].usersYest + campaigns[k].flipCount));
+    //console.log(campaigns[i].name + " @ " + (campaigns[i].usersYest + campaigns[i].flipCount));
     ticker = $(".tick").ticker({
       incremental: 1,
       delay: campaigns[i].flipPause,
