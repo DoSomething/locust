@@ -39,7 +39,6 @@ client.scp({
 		  	});
 		  }
 		});
-
 	}
 });
 
@@ -85,7 +84,7 @@ io.sockets.on('connection', function(socket){
 		  	  				conn.query('DELETE FROM campaigns WHERE nid=$1', campaign['nid']);
 		  	  				conn.query('DELETE FROM userData WHERE nid=$1', campaign['nid']);
 		  	  			} else {
-			  	  			var usersNow = 100; // fill this in with reallllll data!
+			  	  			var usersNow = 10000; // fill this in with reallllll data!
 
 			  	  			var pic;
 			  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
@@ -99,9 +98,18 @@ io.sockets.on('connection', function(socket){
 			  
 			  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], Date.today()], function(error, result) {
 			  	  				if (result.rowCount == 0) {
-			  	  					usersNow = campaignStats.campaigns_pull.campaigns[0].total_sign_ups_all;
-			  	  					console.log(usersNow);
-			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 125000, Date.yesterday()]);
+			  	  					for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
+			  	  						if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
+			  	  							usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+			  	  							console.log(usersNow);
+			  	  							console.log("real title - " + campaign['title']);
+			  	  						} else {
+			  	  							
+			  	  							//console.log("real title - " + campaign['title']);
+			  	  							//console.log("josh title - " + campaignStats.campaigns_pull.campaigns[i].name);
+			  	  						}
+			  	  					}
+			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday()]);
 			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
 			  	  				}
 			  	  			});

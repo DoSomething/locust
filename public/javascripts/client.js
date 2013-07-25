@@ -4,7 +4,7 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 13000;
+var dayLength = 120000;
 var rotatePause = 9000;
 var firstLoop = true;
 
