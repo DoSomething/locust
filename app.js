@@ -57,7 +57,7 @@ conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINC
 		console.log('Made campaigns table.');
 	});
 
-conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, numUsers INTEGER, date TIMESTAMP)')
+conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, numUsers INTEGER, date DATE)')
 	.on('end', function(){
 		console.log('Made user data table.');
 	});
@@ -96,7 +96,7 @@ io.sockets.on('connection', function(socket){
 
 			  	  			}
 			  
-			  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], Date.today()], function(error, result) {
+			  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], campaignStats.campaigns_pull.date], function(error, result) {
 			  	  				if (result.rowCount == 0) {
 			  	  					for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
 			  	  						if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
@@ -117,8 +117,8 @@ io.sockets.on('connection', function(socket){
 			  	  						}
 			  	  					}
 			  	  					// fake yesteday's data
-			  	  					//conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday()]);
-			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, Date.today()]);
+			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday().addDays(-1).toYMD()]);
+			  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date]);
 			  	  				}
 			  	  			});
 
