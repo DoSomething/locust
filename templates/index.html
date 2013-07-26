@@ -4,8 +4,11 @@
   <title>locust pi</title>
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/locust.css">
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/tick.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/jquery.jqplot.min.css">
 	<script type="text/javascript" src="/public/javascripts/jquery.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/jquery.ui.js"></script>
+  <script type="text/javascript" src="/public/javascripts/jquery.jqplot.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/jqplot.pieRenderer.min.js"></script>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/public/javascripts/date.js"></script>
 	<script type="text/javascript" src="/public/javascripts/date-utils.min.js"></script>
@@ -50,6 +53,7 @@
               <div style="clear:both"></div>  
             </div>
             <div style="clear:both"></div>  
+            <div id="graph" style="width:400px; height:200px"></div>
           </div>  
           <div style="clear:both"></div>
         </div>

@@ -198,3 +198,7 @@ body {
   float: right;
   width: 284px;
 }
+/* line 158, ../sass/_panels.sass */
+#featured .data-display .numbers .graph {
+  background-color: lime;
+}

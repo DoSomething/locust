@@ -6,8 +6,6 @@
 
 /public/.sass-cache/**/*
 
-campaigns.db
-
 credentials.json
 
 campaign_stats.json

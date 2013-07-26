@@ -4,8 +4,8 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 2880000;
-var rotatePause = 10000;
+var dayLength = 28800000;
+var rotatePause = 300000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -89,6 +89,24 @@ $(document).ready(function() {// begin jQuery
     // remove the loading screen
     $("#locust-load").remove();
 	});
+
+  var data = [
+     ['a', 12],['b', 9]
+   ];
+   var pieChart = $.jqplot ('graph', [data], 
+     { 
+       seriesDefaults: {
+         // Make this a pie chart.
+         renderer: jQuery.jqplot.PieRenderer, 
+         rendererOptions: {
+           // Put data labels on the pie slices.
+           // By default, labels show the percentage of the slice.
+           showDataLabels: true
+         }
+       }, 
+       legend: { show:true, location: 'e' }
+     }
+   );
 
   $("#ds-logo").on("click", function(){
     ticker[0].stop();
