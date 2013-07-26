@@ -4,8 +4,8 @@ var numSmallPanels = 0;
 var ticker;
 
 //flip variables
-var dayLength = 2880000;
-var rotatePause = 10000;
+var dayLength = 28800000;
+var rotatePause = 300000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
