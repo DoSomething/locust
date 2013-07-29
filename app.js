@@ -64,7 +64,6 @@ client.scp({
 
 		  					  	conn.query('SELECT endDate, nid FROM campaigns', function(error, result) {
 		  					  		result.rows.forEach(function(d) {
-		  					  			console.log(d);
 		  					  			if (Date.today().isAfter(Date.parse(d.endDate))) {
 		  					  				conn.query('DELETE FROM campaigns WHERE endDate=$1', d.endDate);
 		  					  				conn.query('DELETE FROM userData WHERE nid=$1', d.nid);
