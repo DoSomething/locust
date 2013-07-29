@@ -3,10 +3,11 @@ var i = 0;
 var numSmallPanels = 0;
 var ticker;
 var data;
+var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 5000;
+var rotatePause = 15000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -27,11 +28,13 @@ $(document).ready(function() {// begin jQuery
     if(users.rows.length < 2){
       var usersYest = 0;
     }else{
-      var usersYest = users.rows[users.rows.length - 2].numUsers;
+      var usersYest = users.rows[users.rows.length - 2].totalSignups;
     }
-    var usersNow = users.rows[users.rows.length - 1].numUsers;
+    var usersNow = users.rows[users.rows.length - 1].totalSignups;
     var mobileSignups = users.rows[users.rows.length - 1].mobileSignups;
     var webSignups = users.rows[users.rows.length - 1].webSignups;
+    var newMembers = users.rows[users.rows.length - 1].totalNewMembers;
+    var oldMembers = usersNow - newMembers;
 
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
@@ -42,6 +45,11 @@ $(document).ready(function() {// begin jQuery
     } else {
       remaining = remaining + " Days Remaining";
     }
+
+    var memberArray = [];
+    users.rows.forEach(function(r) {
+      memberArray.push([r.date, r.totalSignups]);
+    });
 
     campaigns.push({'name': name,
                     'pic': logo,
@@ -54,7 +62,10 @@ $(document).ready(function() {// begin jQuery
                     'userData': users,
                     'allDone': false,
                     'mobileSignups': mobileSignups,
-                    'webSignups': webSignups
+                    'webSignups': webSignups,
+                    'newMembers': newMembers,
+                    'oldMembers': oldMembers,
+                    'memberArray': memberArray
                   });
     var cIndex = campaigns.length - 1;
 
@@ -77,37 +88,8 @@ $(document).ready(function() {// begin jQuery
         $('#featured').find(".teaser").text(campaigns[0].teaser);
       }
 
-      data = [
-        ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
-      ];
-      var pieChart = $.jqplot ('graph', [data], 
-        { 
-          seriesDefaults: {
-             // Make this a pie chart.
-             renderer: jQuery.jqplot.PieRenderer, 
-             rendererOptions: {
-               // Put data labels on the pie slices.
-               // By default, labels show the percentage of the slice.
-               showDataLabels: true,
-               shadowOffset: true,
-             }
-            }, 
-            legend: { 
-              show: true, 
-              location: 'e',
-              border: 'none',
-              fontFamily: 'din-web',
-              fontSize: '14pt',
-              background: '#F5F5F5',
-              marginLeft: '-50px'
-            },
-            grid: {
-              drawBorder:false,
-              shadow: false,
-              background: '#F5F5F5'
-            }
-         }
-       );
+      rotateGraphs();
+
     }else{// add flip pause to all the small panel campaigns
       campaigns[cIndex].flipPause = (dayLength) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
     }
@@ -140,37 +122,7 @@ $(document).ready(function() {// begin jQuery
     }
 
 
-    data = [
-      ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
-    ];
-    var pieChart = $.jqplot ('graph', [data], 
-      { 
-        seriesDefaults: {
-           // Make this a pie chart.
-           renderer: jQuery.jqplot.PieRenderer, 
-           rendererOptions: {
-             // Put data labels on the pie slices.
-             // By default, labels show the percentage of the slice.
-             showDataLabels: true,
-             shadowOffset: true,
-           }
-          }, 
-          legend: { 
-            show: true, 
-            location: 'e',
-            border: 'none',
-            fontFamily: 'din-web',
-            fontSize: '14pt',
-            background: '#F5F5F5',
-            marginLeft: '-50px'
-          },
-          grid: {
-            drawBorder:false,
-            shadow: false,
-            background: '#F5F5F5'
-          }
-       }
-     );
+    rotateGraphs();
 
 
 
@@ -226,5 +178,106 @@ $(document).ready(function() {// begin jQuery
       $('#featured').find(".teaser").text(campaigns[i].teaser);
     }
   }, rotatePause);
+
+
+  function rotateGraphs() {
+    if (plot != undefined) {
+      plot.destroy();
+    }
+    data = [
+      ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
+    ];
+    plot = $.jqplot ('graph', [data], 
+      { 
+        seriesDefaults: {
+           // Make this a pie chart.
+           renderer: jQuery.jqplot.PieRenderer, 
+           rendererOptions: {
+             // Put data labels on the pie slices.
+             // By default, labels show the percentage of the slice.
+             showDataLabels: true,
+             shadowOffset: true,
+           }
+          }, 
+          legend: { 
+            show: true, 
+            location: 'e',
+            border: 'none',
+            fontFamily: 'din-web',
+            fontSize: '16pt',
+            background: '#F5F5F5',
+            marginLeft: '-50px'
+          },
+          grid: {
+            drawBorder:false,
+            shadow: false,
+            background: '#F5F5F5'
+          }
+       }
+    );
+
+    setTimeout(function() {
+      plot.destroy();
+      data = [
+        ["New DS Members", campaigns[i].newMembers],["Old DS Members", campaigns[i].oldMembers]
+      ];
+      plot = $.jqplot ('graph', [data], 
+        { 
+          seriesDefaults: {
+             // Make this a pie chart.
+             renderer: jQuery.jqplot.PieRenderer, 
+             rendererOptions: {
+               // Put data labels on the pie slices.
+               // By default, labels show the percentage of the slice.
+               showDataLabels: true,
+               shadowOffset: true,
+             }
+            }, 
+            legend: { 
+              show: true, 
+              location: 'e',
+              border: 'none',
+              fontFamily: 'din-web',
+              fontSize: '16pt',
+              background: '#F5F5F5',
+              marginLeft: '-50px'
+            },
+            grid: {
+              drawBorder:false,
+              shadow: false,
+              background: '#F5F5F5'
+            }
+         }
+      );
+
+      setTimeout(function() {
+        plot.destroy();
+        console.log(campaigns[i].memberArray);
+        plot = $.jqplot ('graph', [campaigns[i].memberArray], 
+          { 
+            axesDefaults: {
+              labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            }, 
+            grid: {
+              drawBorder:false,
+              shadow: false,
+              background: '#F5F5F5'
+            },
+            axes: {
+              xaxis: {
+                renderer:$.jqplot.DateAxisRenderer,
+                tickOptions:{formatString:'%b %#d'},
+                label: "Date",
+                pad: 0
+              },
+              yaxis: {
+                label: "Total Signups"
+              }
+            }
+           }
+        );
+      }, (rotatePause/3));
+    }, (rotatePause/3));
+  }
 
 }); // end jQuery scope
