@@ -30,129 +30,130 @@ client.scp({
 		  if (err) {
 		    return console.log(err);
 		  }else{
-		  	data = data.replace(/\'/g, "\"");
-		  	fs.writeFile("./campaign_stats_final.json", data, function(){
-		  		console.log("Replaced all single quotes.");
-		  		campaignStats = require('./campaign_stats_final.json');
+		  	
+	  		campaignStats = require('./campaign_stats_final.json');
 
-		  		var io = require('socket.io').listen(server);
-		  		io.set('log level', 1); 
+	  		var io = require('socket.io').listen(server);
+	  		io.set('log level', 1); 
 
-		  		app.use(express.bodyParser());
-		  		app.engine('html', engines.hogan);
-		  		app.set('views', __dirname + '/templates');
-		  		app.use('/public', express.static(__dirname + '/public'));
+	  		app.use(express.bodyParser());
+	  		app.engine('html', engines.hogan);
+	  		app.set('views', __dirname + '/templates');
+	  		app.use('/public', express.static(__dirname + '/public'));
 
-		  		conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, teaser TEXT, startDate TEXT, endDate TEXT)')
-		  			.on('end', function(){
-		  				console.log('Made campaigns table.');
-		  			});
+	  		conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, teaser TEXT, startDate TEXT, endDate TEXT)')
+	  			.on('end', function(){
+	  				console.log('Made campaigns table.');
+	  			});
 
-		  		conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, numUsers INTEGER, date DATE, mobileSignups INTEGER, webSignups INTEGER)')
-		  			.on('end', function(){
-		  				console.log('Made user data table.');
-		  			});
+	  		conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, totalSignups INTEGER, date DATE, totalNewMembers INTEGER, mobileSignups INTEGER, webSignups INTEGER)')
+	  			.on('end', function(){
+	  				console.log('Made user data table.');
+	  			});
 
-		  		io.sockets.on('connection', function(socket){
-		  			run();
-		  			setInterval(run, 86400000);
+	  		io.sockets.on('connection', function(socket){
+	  			run();
+	  			setInterval(run, 86400000);
 
-		  			function run() {
-		  				request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
-		  					if (!error && response.statusCode == 200) {
-		  					  	var activeCampaigns = JSON.parse(body);
+	  			function run() {
+	  				request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
+	  					if (!error && response.statusCode == 200) {
+	  					  	var activeCampaigns = JSON.parse(body);
 
-		  					  	conn.query('SELECT endDate, nid FROM campaigns', function(error, result) {
-		  					  		result.rows.forEach(function(d) {
-		  					  			if (Date.today().isAfter(Date.parse(d.endDate))) {
-		  					  				conn.query('DELETE FROM campaigns WHERE endDate=$1', d.endDate);
-		  					  				conn.query('DELETE FROM userData WHERE nid=$1', d.nid);
-		  					  			}
-		  					  		});
-		  					  	});
-		  					  	  	
-		  				  	  	activeCampaigns.forEach(function(c) {
-		  				  	  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
+	  					  	conn.query('SELECT endDate, nid FROM campaigns', function(error, result) {
+	  					  		result.rows.forEach(function(d) {
+	  					  			if (Date.today().isAfter(Date.parse(d.endDate))) {
+	  					  				conn.query('DELETE FROM campaigns WHERE endDate=$1', d.endDate);
+	  					  				conn.query('DELETE FROM userData WHERE nid=$1', d.nid);
+	  					  			}
+	  					  		});
+	  					  	});
+	  					  	  	
+	  				  	  	activeCampaigns.forEach(function(c) {
+	  				  	  		request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
-		  				  	  			var campaign = JSON.parse(body);
-		  				  	  			//console.log(campaign);
+	  				  	  			var campaign = JSON.parse(body);
+	  				  	  			//console.log(campaign);
 
-	  					  	  			var usersNow = 10000; // fill this in with reallllll data!
-	  					  	  			var mobileSignups = 0;
-	  					  	  			var webSignups = 0;
+  					  	  			var usersNow = 10000; // fill this in with reallllll data!
+  					  	  			var mobileSignups = 0;
+  					  	  			var webSignups = 0;
+  					  	  			var newMembers = 0;
 
-	  					  	  			var pic;
-	  					  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
-	  					  	  				pic = '/public/ds-logo.png';
-	  					  	  			} else {
-	  					  	  				pic = campaign['field_campaign_main_image']['und'][0]['uri'];
-	  					  	  				pic = pic.replace("public://", "");
-	  					  	  				pic = "http://www.dosomething.org/files/styles/campaigns_image/public/".concat(pic);
+  					  	  			var pic;
+  					  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
+  					  	  				pic = '/public/ds-logo.png';
+  					  	  			} else {
+  					  	  				pic = campaign['field_campaign_main_image']['und'][0]['uri'];
+  					  	  				pic = pic.replace("public://", "");
+  					  	  				pic = "http://www.dosomething.org/files/styles/campaigns_image/public/".concat(pic);
 
-	  					  	  			}
-	  					  
-	  					  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], campaignStats.campaigns_pull.date], function(error, result) {
-	  					  	  				if (result.rowCount == 0) {
-	  					  	  					for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
-	  					  	  						if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
-	  					  	  							usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-	  					  	  							mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
-	  					  	  							webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
-	  					  	  						} else {
-	  					  	  							if(campaign['title'] == "25,000 Women" && campaignStats.campaigns_pull.campaigns[i].name == "25k Women"){
-	  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-	  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
-	  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
-	  					  	  							}
-	  					  	  							if(campaign['title'] == "Puppy Text" && campaignStats.campaigns_pull.campaigns[i].name == "Puppy_Text"){
-	  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-	  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
-	  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
-	  					  	  							}
-	  					  	  						}
-	  					  	  					}
-	  					  	  					// fake yesteday's data
-	  					  	  					//conn.query('INSERT INTO userData (nid, numUsers, date, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5)', [campaign['nid'], 5000, Date.yesterday().addDays(-1).toYMD(), mobileSignups, webSignups]);
-	  					  	  					conn.query('INSERT INTO userData (nid, numUsers, date, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date, mobileSignups, webSignups]);
-	  					  	  				}
-	  					  	  			});
+  					  	  			}
+  					  
+  					  	  			conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], campaignStats.campaigns_pull.date], function(error, result) {
+  					  	  				if (result.rowCount == 0) {
+  					  	  					for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
+  					  	  						if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
+  					  	  							usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+  					  	  							mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+  					  	  							webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
+  					  	  							newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
+  					  	  						} else {
+  					  	  							if(campaign['title'] == "25,000 Women" && campaignStats.campaigns_pull.campaigns[i].name == "25k Women"){
+  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
+  					  	  								newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
 
-	  					  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
-	  					  	  			  if(result.rowCount != 0){
-	  					  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, logo=$5 WHERE nid=$6', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic, campaign['nid']]);
-	  					  	  			  }else{
-	  					  	  			  	usersNow = 56; // REMOVE for production
-	  					  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, logo) VALUES ($1, $2, $3, $4, $5, $6)', 
-	  					  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic]);
-	  					  	  			  }
-	  					  	  			});
-	  									
-	  									conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
-	  										send(JSON.stringify(result), true);
-	  									});
+  					  	  							}
+  					  	  							if(campaign['title'] == "Puppy Text" && campaignStats.campaigns_pull.campaigns[i].name == "Puppy_Text"){
+  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
+  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
+  					  	  								newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
 
-	  				  	  				conn.query('SELECT numUsers, date, mobileSignups, webSignups FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
-	  				  	  					send(JSON.stringify(result), false);
+  					  	  							}
+  					  	  						}
+  					  	  					}
+  					  	  					conn.query('INSERT INTO userData (nid, totalSignups, date, totalNewMembers, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5, $6)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date, newMembers, mobileSignups, webSignups]);
+  					  	  				}
+  					  	  			});
 
-	  				  	  				});
-	  				  	  				var info = 0;
-	  				  	  				var users = 0;
-	  				  	  				function send(stuff, first) {
-	  				  	  					if (first) {
-	  				  	  						info = stuff;
-	  				  	  					} else {
-	  				  	  						users = stuff
-	  				  	  						socket.emit('setCampaign', info, users);
-	  				  	  					}
-	  				  	  				}
-		  				  	  		});
-		  				  	  	});
-		  					}
-		  				});
-		  			}
-		  		});
+  					  	  			conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+  					  	  			  if(result.rowCount != 0){
+  					  	  			    conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, logo=$5 WHERE nid=$6', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic, campaign['nid']]);
+  					  	  			  }else{
+  					  	  			  	usersNow = 56; // REMOVE for production
+  					  	  			    conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, logo) VALUES ($1, $2, $3, $4, $5, $6)', 
+  					  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic]);
+  					  	  			  }
+  					  	  			});
+  									
+  									conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+  										send(JSON.stringify(result), true);
+  									});
 
-		  	});
+  				  	  				conn.query('SELECT totalSignups, date, totalNewMembers, mobileSignups, webSignups FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
+  				  	  					send(JSON.stringify(result), false);
+
+  				  	  				});
+  				  	  				var info = 0;
+  				  	  				var users = 0;
+  				  	  				function send(stuff, first) {
+  				  	  					if (first) {
+  				  	  						info = stuff;
+  				  	  					} else {
+  				  	  						users = stuff
+  				  	  						socket.emit('setCampaign', info, users);
+  				  	  					}
+  				  	  				}
+	  				  	  		});
+	  				  	  	});
+	  					}
+	  				});
+	  			}
+	  		});
+
 		  }
 		});
 	}
