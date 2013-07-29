@@ -77,7 +77,37 @@ $(document).ready(function() {// begin jQuery
         $('#featured').find(".teaser").text(campaigns[0].teaser);
       }
 
-      
+      data = [
+        ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
+      ];
+      var pieChart = $.jqplot ('graph', [data], 
+        { 
+          seriesDefaults: {
+             // Make this a pie chart.
+             renderer: jQuery.jqplot.PieRenderer, 
+             rendererOptions: {
+               // Put data labels on the pie slices.
+               // By default, labels show the percentage of the slice.
+               showDataLabels: true,
+               shadowOffset: true,
+             }
+            }, 
+            legend: { 
+              show: true, 
+              location: 'e',
+              border: 'none',
+              fontFamily: 'din-web',
+              fontSize: '14pt',
+              background: '#F5F5F5',
+              marginLeft: '-50px'
+            },
+            grid: {
+              drawBorder:false,
+              shadow: false,
+              background: '#F5F5F5'
+            }
+         }
+       );
     }else{// add flip pause to all the small panel campaigns
       campaigns[cIndex].flipPause = (dayLength) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
     }
@@ -110,7 +140,38 @@ $(document).ready(function() {// begin jQuery
     }
 
 
-    
+    data = [
+      ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
+    ];
+    var pieChart = $.jqplot ('graph', [data], 
+      { 
+        seriesDefaults: {
+           // Make this a pie chart.
+           renderer: jQuery.jqplot.PieRenderer, 
+           rendererOptions: {
+             // Put data labels on the pie slices.
+             // By default, labels show the percentage of the slice.
+             showDataLabels: true,
+             shadowOffset: true,
+           }
+          }, 
+          legend: { 
+            show: true, 
+            location: 'e',
+            border: 'none',
+            fontFamily: 'din-web',
+            fontSize: '14pt',
+            background: '#F5F5F5',
+            marginLeft: '-50px'
+          },
+          grid: {
+            drawBorder:false,
+            shadow: false,
+            background: '#F5F5F5'
+          }
+       }
+     );
+
 
 
     // how many flips should I have completed?
