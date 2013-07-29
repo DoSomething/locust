@@ -25,15 +25,15 @@ client.scp({
 	if(err != null){
 		console.log(err);
 	}else{
-		console.log("SUCCESS: Copied campaign_stats.json to local machine.");
-		fs.readFile("./campaign_stats.json", "utf8", function (err,data) {
+		console.log("SUCCESS: Copied campaign_stats_final.json to local machine.");
+		fs.readFile("./campaign_stats_final.json", "utf8", function (err,data) {
 		  if (err) {
 		    return console.log(err);
 		  }else{
 		  	data = data.replace(/\'/g, "\"");
-		  	fs.writeFile("./campaign_stats.json", data, function(){
+		  	fs.writeFile("./campaign_stats_final.json", data, function(){
 		  		console.log("Replaced all single quotes.");
-		  		campaignStats = require('./campaign_stats.json');
+		  		campaignStats = require('./campaign_stats_final.json');
 
 		  		var io = require('socket.io').listen(server);
 		  		io.set('log level', 1); 

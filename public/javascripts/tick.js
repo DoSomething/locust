@@ -91,6 +91,12 @@
 
     Tick.prototype.render = function() {
       var container, containers, digits, i, _len, _ref, _results;
+
+      this.value = "" + this.value;
+      while(this.value.length < 6){
+        this.value = "0" + this.value;
+      }
+      
       digits = String(this.value).split('');
 
       containers = this.element.children(':not(.tick-separator)');
@@ -147,7 +153,7 @@
     */
 
     Tick.prototype.tick = function() {
-      this.value = this.increment(this.value);
+      this.value = this.increment(Number(this.value));
       this.render();
       return this.set_timer();
     };

@@ -190,12 +190,12 @@ body {
 /* line 149, ../sass/_panels.sass */
 #featured .data-display .numbers #tick-holder {
   margin: 0 auto;
-  width: 300px;
+  width: 352px;
 }
 /* line 153, ../sass/_panels.sass */
 #featured .data-display .numbers #tick-holder .tick {
   margin-top: 0;
   margin-bottom: 14px;
   float: right;
-  width: 284px;
+  width: 336px;
 }
