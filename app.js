@@ -48,7 +48,7 @@ client.scp({
 		  				console.log('Made campaigns table.');
 		  			});
 
-		  		conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, numUsers INTEGER, date DATE)')
+		  		conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, numUsers INTEGER, date DATE, mobileSignups INTEGER, webSignups INTEGER)')
 		  			.on('end', function(){
 		  				console.log('Made user data table.');
 		  			});
@@ -76,6 +76,8 @@ client.scp({
 		  				  	  				conn.query('DELETE FROM userData WHERE nid=$1', campaign['nid']);
 		  				  	  			} else {
 		  					  	  			var usersNow = 10000; // fill this in with reallllll data!
+		  					  	  			var mobileSignups = 0;
+		  					  	  			var webSignups = 0;
 
 		  					  	  			var pic;
 		  					  	  			if (campaign['field_campaign_main_image']['und'] == undefined) {
@@ -92,24 +94,27 @@ client.scp({
 		  					  	  					for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
 		  					  	  						if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
 		  					  	  							usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-		  					  	  							console.log(usersNow);
+		  					  	  							mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+		  					  	  							webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
 		  					  	  							console.log("real title - " + campaign['title']);
 		  					  	  						} else {
 		  					  	  							if(campaign['title'] == "25,000 Women" && campaignStats.campaigns_pull.campaigns[i].name == "25k Women"){
 		  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-		  						  	  							console.log(usersNow);
+		  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+		  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
 		  						  	  							console.log("real title - " + campaign['title']);
 		  					  	  							}
 		  					  	  							if(campaign['title'] == "Puppy Text" && campaignStats.campaigns_pull.campaigns[i].name == "Puppy_Text"){
 		  					  	  								usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-		  						  	  							console.log(usersNow);
+		  					  	  								mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
+		  					  	  								webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
 		  						  	  							console.log("real title - " + campaign['title']);
 		  					  	  							}
 		  					  	  						}
 		  					  	  					}
 		  					  	  					// fake yesteday's data
-		  					  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], 5000, Date.yesterday().addDays(-1).toYMD()]);
-		  					  	  					conn.query('INSERT INTO userData (nid, numUsers, date) VALUES ($1, $2, $3)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date]);
+		  					  	  					//conn.query('INSERT INTO userData (nid, numUsers, date, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5)', [campaign['nid'], 5000, Date.yesterday().addDays(-1).toYMD(), mobileSignups, webSignups]);
+		  					  	  					conn.query('INSERT INTO userData (nid, numUsers, date, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date, mobileSignups, webSignups]);
 		  					  	  				}
 		  					  	  			});
 
@@ -127,7 +132,7 @@ client.scp({
 		  										send(JSON.stringify(result), true);
 		  									});
 
-		  				  	  				conn.query('SELECT numUsers, date FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
+		  				  	  				conn.query('SELECT numUsers, date, mobileSignups, webSignups FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
 		  				  	  					send(JSON.stringify(result), false);
 
 		  				  	  				});

@@ -2,10 +2,11 @@ var campaigns = [];
 var i = 0;
 var numSmallPanels = 0;
 var ticker;
+var data;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 300000;
+var rotatePause = 5000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -29,6 +30,8 @@ $(document).ready(function() {// begin jQuery
       var usersYest = users.rows[users.rows.length - 2].numUsers;
     }
     var usersNow = users.rows[users.rows.length - 1].numUsers;
+    var mobileSignups = users.rows[users.rows.length - 1].mobileSignups;
+    var webSignups = users.rows[users.rows.length - 1].webSignups;
 
 		var end = Date.parse(data.rows[0].endDate);
 		var remaining = Date.today().getDaysBetween(end);
@@ -49,7 +52,9 @@ $(document).ready(function() {// begin jQuery
                     'flipCount': 0,
                     'flipPause': 0,
                     'userData': users,
-                    'allDone': false
+                    'allDone': false,
+                    'mobileSignups': mobileSignups,
+                    'webSignups': webSignups
                   });
     var cIndex = campaigns.length - 1;
 
@@ -71,6 +76,38 @@ $(document).ready(function() {// begin jQuery
       }else{
         $('#featured').find(".teaser").text(campaigns[0].teaser);
       }
+
+      data = [
+        ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
+      ];
+      var pieChart = $.jqplot ('graph', [data], 
+        { 
+          seriesDefaults: {
+             // Make this a pie chart.
+             renderer: jQuery.jqplot.PieRenderer, 
+             rendererOptions: {
+               // Put data labels on the pie slices.
+               // By default, labels show the percentage of the slice.
+               showDataLabels: true,
+               shadowOffset: true,
+             }
+            }, 
+            legend: { 
+              show: true, 
+              location: 'e',
+              border: 'none',
+              fontFamily: 'din-web',
+              fontSize: '14pt',
+              background: '#F5F5F5',
+              marginLeft: '-50px'
+            },
+            grid: {
+              drawBorder:false,
+              shadow: false,
+              background: '#F5F5F5'
+            }
+         }
+       );
     }else{// add flip pause to all the small panel campaigns
       campaigns[cIndex].flipPause = (dayLength) / (campaigns[cIndex].usersNow - campaigns[cIndex].usersYest);
     }
@@ -90,23 +127,6 @@ $(document).ready(function() {// begin jQuery
     $("#locust-load").remove();
 	});
 
-  var data = [
-     ['a', 12],['b', 9]
-   ];
-   var pieChart = $.jqplot ('graph', [data], 
-     { 
-       seriesDefaults: {
-         // Make this a pie chart.
-         renderer: jQuery.jqplot.PieRenderer, 
-         rendererOptions: {
-           // Put data labels on the pie slices.
-           // By default, labels show the percentage of the slice.
-           showDataLabels: true
-         }
-       }, 
-       legend: { show:true, location: 'e' }
-     }
-   );
 
   $("#ds-logo").on("click", function(){
     ticker[0].stop();
@@ -118,6 +138,41 @@ $(document).ready(function() {// begin jQuery
     if (i >= campaigns.length) {
       i = 0;
     }
+
+
+    data = [
+      ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
+    ];
+    var pieChart = $.jqplot ('graph', [data], 
+      { 
+        seriesDefaults: {
+           // Make this a pie chart.
+           renderer: jQuery.jqplot.PieRenderer, 
+           rendererOptions: {
+             // Put data labels on the pie slices.
+             // By default, labels show the percentage of the slice.
+             showDataLabels: true,
+             shadowOffset: true,
+           }
+          }, 
+          legend: { 
+            show: true, 
+            location: 'e',
+            border: 'none',
+            fontFamily: 'din-web',
+            fontSize: '14pt',
+            background: '#F5F5F5',
+            marginLeft: '-50px'
+          },
+          grid: {
+            drawBorder:false,
+            shadow: false,
+            background: '#F5F5F5'
+          }
+       }
+     );
+
+
 
     // how many flips should I have completed?
     if(firstLoop){
