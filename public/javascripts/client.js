@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 15000;
+var rotatePause = 300000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -168,6 +168,12 @@ $(document).ready(function() {// begin jQuery
 
     $(".tick").remove();
     $("#tick-holder").prepend("<p class='tick tick-flip'>" + (campaigns[i].usersYest + campaigns[i].flipCount) + "</p>");
+
+    //raspberry pi does not display padding correctly
+    if(window.location.hash != "#tv"){
+      $("#tick-holder").css({"width":"352px"});
+      $(".tick").css({"width":"336px"});
+    }
 
     ticker = $(".tick").ticker({
       incremental: 1,
