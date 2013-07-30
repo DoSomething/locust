@@ -214,20 +214,11 @@ $(document).ready(function() {// begin jQuery
         seriesDefaults: {
            // Make this a pie chart.
            renderer: jQuery.jqplot.PieRenderer, 
-           rendererOptions: {
-             // Put data labels on the pie slices.
-             // By default, labels show the percentage of the slice.
-             showDataLabels: true,
-             shadowOffset: true,
-           }
           }, 
+          seriesColors :['#18408b','#fed100'],
           legend: { 
-            show: true, 
-            location: 'e',
             border: 'none',
-            fontFamily: 'din-web',
             fontSize: '16pt',
-            background: '#F5F5F5',
             marginLeft: '-50px'
           },
           grid: {
@@ -248,20 +239,11 @@ $(document).ready(function() {// begin jQuery
           seriesDefaults: {
              // Make this a pie chart.
              renderer: jQuery.jqplot.PieRenderer, 
-             rendererOptions: {
-               // Put data labels on the pie slices.
-               // By default, labels show the percentage of the slice.
-               showDataLabels: true,
-               shadowOffset: true,
-             }
-            }, 
+            },
+            seriesColors :['#18408b','#fed100'], 
             legend: { 
-              show: true, 
-              location: 'e',
               border: 'none',
-              fontFamily: 'din-web',
               fontSize: '16pt',
-              background: '#F5F5F5',
               marginLeft: '-50px'
             },
             grid: {
@@ -286,6 +268,9 @@ $(document).ready(function() {// begin jQuery
             },
             series: {
               lineWidth:4
+            },
+            legend: {
+              show: false
             },
             axes: {
               xaxis: {

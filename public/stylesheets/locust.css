@@ -174,7 +174,7 @@ body {
 }
 /* line 144, ../sass/_panels.sass */
 #featured .data-display .numbers {
-  margin: 0 auto;
+  margin: -47px auto 0 auto;
   text-align: center;
 }
 /* line 148, ../sass/_panels.sass */
@@ -191,4 +191,8 @@ body {
   margin-top: 0;
   float: right;
   width: 284px;
+}
+/* line 160, ../sass/_panels.sass */
+#featured .data-display .numbers #graph {
+  margin: 5px auto;
 }
