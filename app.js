@@ -74,7 +74,6 @@ client.scp({
 
 	  				  	  			var campaign = JSON.parse(body);
 	  				  	  			//console.log(campaign);
-
   					  	  			var usersNow = 0;
   					  	  			var mobileSignups = 0;
   					  	  			var webSignups = 0;
@@ -128,8 +127,8 @@ client.scp({
   					  	  			      [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic]);
   					  	  			  }
   					  	  			});
-  									
-  									conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+                        
+  									conn.query('SELECT title, logo, teaser, startDate, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
   										send(JSON.stringify(result), true);
   									});
 
