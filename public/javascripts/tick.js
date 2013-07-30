@@ -200,6 +200,9 @@
 
     Tick_Flip.prototype.flip = function(target, digit, scale, duration, onComplete) {
       var _this = this;
+      console.log(duration);
+      console.log(scale);
+
       target.css({
         borderSpacing: 100
       });
@@ -245,8 +248,10 @@
       var parts;
       parts = $(container).children();
       if (this.running && parts.eq(2).html() !== digit) {
-        this.flip(parts.eq(1), digit, this.upper, this.options.delay / 4, function() {});
-        this.flip(parts.eq(3).html(digit), digit, this.lower, this.options.delay / 3, function() {
+
+        // 8000 was originally this.options.delay
+        this.flip(parts.eq(1), digit, this.upper, 1200 / 4, function() {});
+        this.flip(parts.eq(3).html(digit), digit, this.lower, 1200 / 3, function() {
           return parts.eq(0).html(digit);
         });
       }
