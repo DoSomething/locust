@@ -113,7 +113,6 @@
         container = containers[i];
         _results.push(this.update_container(container, digits[i]));
       }
-      //console.log(_results);
       return _results;
     };
 
@@ -200,9 +199,6 @@
 
     Tick_Flip.prototype.flip = function(target, digit, scale, duration, onComplete) {
       var _this = this;
-      console.log(duration);
-      console.log(scale);
-
       target.css({
         borderSpacing: 100
       });
