@@ -12,6 +12,12 @@ var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
 
+  //raspberry pi does not display padding correctly
+  if(window.location.hash != "#tv"){
+    $("#tick-holder").css({"width":"352px"});
+    $(".tick").css({"width":"336px"});
+  }
+
   //loading screen
   var loadH = $(window).height();
   $("body").append("<div id='locust-load' style='width: 100%; height: " + loadH + "px; text-align: center; position: absolute; z-index: 99; top: 0px; left: 0px; background-color: rgba(0,0,0,1); padding-top: 100px'><img src='/public/locust.gif'/></div>");
