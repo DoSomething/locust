@@ -137,62 +137,56 @@ body {
   text-align: center;
   height: 108px;
   overflow: hidden;
-  background-color: white;
   border-right: #3892e3 solid 20px;
+  background: url("/public/swarm.jpg");
 }
-/* line 111, ../sass/_panels.sass */
-#featured .info .logo img {
-  width: 100%;
-  max-width: 100%;
-  max-height: 108px;
-}
-/* line 116, ../sass/_panels.sass */
+/* line 118, ../sass/_panels.sass */
 #featured .campaign {
   width: 100%;
   background-color: whitesmoke;
   margin-top: 20px;
 }
-/* line 121, ../sass/_panels.sass */
+/* line 123, ../sass/_panels.sass */
 #featured .campaign span {
   display: inline-block;
 }
-/* line 124, ../sass/_panels.sass */
+/* line 126, ../sass/_panels.sass */
 #featured .campaign .title {
   color: #3892e3;
   margin: 14px 14px 10px 14px;
 }
-/* line 128, ../sass/_panels.sass */
+/* line 130, ../sass/_panels.sass */
 #featured .campaign .teaser {
   margin: 0 14px 14px 14px;
   line-height: 1em;
 }
-/* line 132, ../sass/_panels.sass */
+/* line 134, ../sass/_panels.sass */
 #featured .data-display {
   width: 100%;
   background-color: whitesmoke;
   margin-top: 20px;
 }
-/* line 137, ../sass/_panels.sass */
+/* line 139, ../sass/_panels.sass */
 #featured .data-display .title {
   display: inline-block;
   color: #3892e3;
   margin: 14px 14px 10px 14px;
 }
-/* line 142, ../sass/_panels.sass */
+/* line 144, ../sass/_panels.sass */
 #featured .data-display .numbers {
   margin: 0 auto;
   text-align: center;
 }
-/* line 146, ../sass/_panels.sass */
+/* line 148, ../sass/_panels.sass */
 #featured .data-display .numbers .label {
   display: inline-block;
 }
-/* line 149, ../sass/_panels.sass */
+/* line 151, ../sass/_panels.sass */
 #featured .data-display .numbers #tick-holder {
   margin: 0 auto;
   width: 300px;
 }
-/* line 153, ../sass/_panels.sass */
+/* line 155, ../sass/_panels.sass */
 #featured .data-display .numbers #tick-holder .tick {
   margin-top: 0;
   float: right;

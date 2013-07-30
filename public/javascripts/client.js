@@ -83,11 +83,20 @@ $(document).ready(function() {// begin jQuery
 
       $('#featured').find('.info').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
-      $('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
+      
+      //$('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
+      $('#featured').find('.logo').css("background", "url(" + campaigns[0].pic + ") no-repeat");
+      $('#featured').find('.logo').css("background-size", "100% auto");
+      $('#featured').find('.logo').css("background-position", "center");
+
       if(campaigns[0].teaser.length > 145){
         $('#featured').find(".teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
       }else{
         $('#featured').find(".teaser").text(campaigns[0].teaser);
+      }
+
+      if (campaigns[0].usersNow == 0) {
+        ticker[0].stop();
       }
 
       rotateGraphs();
@@ -173,7 +182,12 @@ $(document).ready(function() {// begin jQuery
     // fill in the featured panel
     $('#featured').find('.info').find('.title').text(campaigns[i].name);
     $('#featured').find('.days-remaining').text(campaigns[i].daysLeft);
-    $('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
+
+    //$('#featured').find('.logo').find('img').attr("src", campaigns[i].pic);
+    $('#featured').find('.logo').css("background", "url(" + campaigns[i].pic + ") no-repeat");
+    $('#featured').find('.logo').css("background-size", "100% auto");
+    $('#featured').find('.logo').css("background-position", "center");
+
     if(campaigns[i].teaser.length > 145){
       $('#featured').find(".teaser").text(campaigns[i].teaser.substring(0, 142).concat("..."));  
     }else{
@@ -183,6 +197,12 @@ $(document).ready(function() {// begin jQuery
 
 
   function rotateGraphs() {
+    if (campaigns[i].usersNow <= 0) {
+      if (plot != undefined) {
+        plot.destroy();
+      }
+      return;
+    }
     if (plot != undefined) {
       plot.destroy();
     }

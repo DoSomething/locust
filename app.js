@@ -75,7 +75,7 @@ client.scp({
 	  				  	  			var campaign = JSON.parse(body);
 	  				  	  			//console.log(campaign);
 
-  					  	  			var usersNow = 10000; // fill this in with reallllll data!
+  					  	  			var usersNow = 0; // fill this in with reallllll data!
   					  	  			var mobileSignups = 0;
   					  	  			var webSignups = 0;
   					  	  			var newMembers = 0;
