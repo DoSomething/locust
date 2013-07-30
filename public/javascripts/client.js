@@ -24,6 +24,7 @@ $(document).ready(function() {// begin jQuery
     var logo = data.rows[0].logo;
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
+    var startDate = data.rows[0].startDate;
 
     if(users.rows.length < 2){
       var usersYest = 0;
@@ -46,7 +47,7 @@ $(document).ready(function() {// begin jQuery
       remaining = remaining + " Days Remaining";
     }
 
-    var memberArray = [];
+    var memberArray = [[startDate,0]];
     users.rows.forEach(function(r) {
       memberArray.push([r.date, r.totalSignups]);
     });
@@ -54,6 +55,7 @@ $(document).ready(function() {// begin jQuery
     campaigns.push({'name': name,
                     'pic': logo,
                     'daysLeft': remaining,
+                    'start': startDate,
                     'teaser': teaser,
                     'usersYest': usersYest,
                     'usersNow': usersNow,
@@ -252,7 +254,6 @@ $(document).ready(function() {// begin jQuery
 
       setTimeout(function() {
         plot.destroy();
-        console.log(campaigns[i].memberArray);
         plot = $.jqplot ('graph', [campaigns[i].memberArray], 
           { 
             axesDefaults: {
@@ -263,21 +264,25 @@ $(document).ready(function() {// begin jQuery
               shadow: false,
               background: '#F5F5F5'
             },
+            series: {
+              lineWidth:4
+            },
             axes: {
               xaxis: {
                 renderer:$.jqplot.DateAxisRenderer,
                 tickOptions:{formatString:'%b %#d'},
+                min: campaigns[i].start,
                 label: "Date",
                 pad: 0
               },
               yaxis: {
+                min: 0,
                 label: "Total Signups"
               }
             }
-           }
+          }
         );
       }, (rotatePause/3));
     }, (rotatePause/3));
   }
-
 }); // end jQuery scope
