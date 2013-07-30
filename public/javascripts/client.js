@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 300000;
+var rotatePause = 15000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -111,6 +111,9 @@ $(document).ready(function() {// begin jQuery
         ticker[0].stop();
       }
 
+      var height = 720 - (80 + 108 + Number($('#featured').find('.campaign').css('height').replace("px", "")));
+      $('#featured').find('.data-display').css('height', height);
+
       rotateGraphs();
 
     }else{// add flip pause to all the small panel campaigns
@@ -200,6 +203,9 @@ $(document).ready(function() {// begin jQuery
     }else{
       $('#featured').find(".teaser").text(campaigns[i].teaser);
     }
+
+    height = 720 - (80 + 108 + Number($('#featured').find('.campaign').css('height').replace("px", "")));
+    $('#featured').find('.data-display').css('height', height);
   }, rotatePause);
 
 

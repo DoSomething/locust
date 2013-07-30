@@ -199,6 +199,7 @@
 
     Tick_Flip.prototype.flip = function(target, digit, scale, duration, onComplete) {
       var _this = this;
+
       target.css({
         borderSpacing: 100
       });
