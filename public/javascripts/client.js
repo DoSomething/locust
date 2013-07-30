@@ -27,9 +27,9 @@ $(document).ready(function() {// begin jQuery
     if(users.rows.length < 2){
       var usersYest = 0;
     }else{
-      var usersYest = users.rows[users.rows.length - 2].numUsers;
+      var usersYest = users.rows[users.rows.length - 2].totalSignups;
     }
-    var usersNow = users.rows[users.rows.length - 1].numUsers;
+    var usersNow = users.rows[users.rows.length - 1].totalSignups;
     var mobileSignups = users.rows[users.rows.length - 1].mobileSignups;
     var webSignups = users.rows[users.rows.length - 1].webSignups;
 
@@ -67,6 +67,12 @@ $(document).ready(function() {// begin jQuery
         delay: campaigns[0].flipPause,
         separators: true
       });
+
+      // don't do any flips at all
+      if(campaigns[0].usersNow == campaigns[0].usersYest){
+        campaigns[0].allDone = false;
+        ticker[0].stop();
+      }
 
       $('#featured').find('.info').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
@@ -109,21 +115,15 @@ $(document).ready(function() {// begin jQuery
       i = 0;
     }
 
-
-    
-
-
     // how many flips should I have completed?
     if(firstLoop){
       if(i == campaigns.length - 1){
         firstLoop = false;
       }
-      campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);   
+      campaigns[i].flipCount += Math.floor((rotatePause * (i)) / campaigns[i].flipPause);
     }else{
       campaigns[i].flipCount += Math.floor((rotatePause * (campaigns.length)) / campaigns[i].flipPause); 
     }
-
-
 
     // set a ticker as all done before even loading it
     if((campaigns[i].flipCount + campaigns[i].usersYest) >= campaigns[i].usersNow){
