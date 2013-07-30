@@ -26,10 +26,16 @@ $(document).ready(function() {// begin jQuery
 
 	socket.on("setCampaign", function (info, users, remove) {
     if (remove) {
+      console.log("here");
       campaigns = [];
       $('.small-panel').each(function() {
         $(this).remove();
       });
+      i = 0;
+      numSmallPanels = 0;
+      $(".tick").remove();  
+      $("#tick-holder").prepend("<p class='tick tick-flip'>" + "</p>");
+
     }
     var data = JSON.parse(info);
     var users = JSON.parse(users);
