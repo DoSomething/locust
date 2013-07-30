@@ -24,7 +24,13 @@ $(document).ready(function() {// begin jQuery
 
 	var socket = io.connect(window.location.hostname);
 
-	socket.on("setCampaign", function (info, users) {
+	socket.on("setCampaign", function (info, users, remove) {
+    if (remove) {
+      campaigns = [];
+      $('.small-panel').each(function() {
+        $(this).remove();
+      });
+    }
     var data = JSON.parse(info);
     var users = JSON.parse(users);
     var logo = data.rows[0].logo;

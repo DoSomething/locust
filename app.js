@@ -15,6 +15,7 @@ var credentials = require('./credentials.json');
 
 // json of campaign stats
 var campaignStats;
+var remove = true;
 
 client.scp({
     host: credentials.host,
@@ -56,6 +57,7 @@ client.scp({
 	  			setInterval(run, 86400000);
 
 	  			function run() {
+            remove = true;
 	  				request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
 	  					if (!error && response.statusCode == 200) {
 	  					  	var activeCampaigns = JSON.parse(body);
@@ -143,7 +145,8 @@ client.scp({
   				  	  						info = stuff;
   				  	  					} else {
   				  	  						users = stuff
-  				  	  						socket.emit('setCampaign', info, users);
+  				  	  						socket.emit('setCampaign', info, users, remove);
+                            remove = false;
   				  	  					}
   				  	  				}
 	  				  	  		});
