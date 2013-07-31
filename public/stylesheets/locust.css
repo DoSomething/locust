@@ -203,6 +203,6 @@ body {
 }
 /* line 161, ../sass/_panels.sass */
 #featured .data-display .numbers #graph {
-  margin: -4px auto;
+  margin: 10px auto;
   font-size: 0.6em;
 }
