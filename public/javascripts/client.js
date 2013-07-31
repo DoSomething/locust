@@ -15,8 +15,13 @@ $(document).ready(function() {// begin jQuery
   //raspberry pi does not display padding correctly
   if(window.location.hash != "#tv"){
     $("#tick-holder").css({"width":"352px"});
-    $(".tick").css({"width":"336px"});
+    $(".tick").css({"max-width":"336px"});
   }
+
+  // set heights for responsive web design
+  $("#wrapper").css("height", $(window).height());
+  $("#featured").css("height", $(window).height());
+  $("#sidebar").css("height", $(window).height());
 
   //loading screen
   var loadH = $(window).height();
@@ -34,7 +39,7 @@ $(document).ready(function() {// begin jQuery
       i = 0;
       numSmallPanels = 0;
       $(".tick").remove();  
-      $("#tick-holder").prepend("<p class='tick tick-flip'>" + "</p>");
+      $("#tick-holder").prepend("<p class='tick tick-flip'></p>");
 
     }
     var data = JSON.parse(info);
@@ -123,8 +128,9 @@ $(document).ready(function() {// begin jQuery
         ticker[0].stop();
       }
 
-      var height = 720 - (80 + 108 + Number($('#featured').find('.campaign').css('height').replace("px", "")));
-      $('#featured').find('.data-display').css('height', height);
+      // 108 is sum of margins in featured div
+      var height = $(window).height() - (108 + $('#featured').find('.info').height() + $('#featured').find('.campaign').height());
+      $('#featured').find('.data-display').height(height);
 
       rotateGraphs();
 
@@ -222,8 +228,10 @@ $(document).ready(function() {// begin jQuery
       $('#featured').find(".teaser").text(campaigns[i].teaser);
     }
 
-    height = 720 - (80 + 108 + Number($('#featured').find('.campaign').css('height').replace("px", "")));
-    $('#featured').find('.data-display').css('height', height);
+    // 108 is sum of margins in featured div
+    height = $(window).height() - (108 + $('#featured').find('.info').height() + $('#featured').find('.campaign').height());
+    $('#featured').find('.data-display').height(height);
+    
   }, rotatePause);
 
 

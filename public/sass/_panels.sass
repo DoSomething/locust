@@ -2,19 +2,17 @@
 body
   margin: 0
   background-color: $bg-color
-  font-family: "din-web"
+  font-family: "din-web-reg"
+  font-size: $base-size
 
 #wrapper
-  position: absolute
-  top: 50%
-  left: 50%
-  width: 960px
-  height: 720px
-  margin: -360px 0 0 -480px
+  width: 100%
+  min-width: $window-width
+  min-height: $window-height
 
 //this is helpful for making the content of this div appear to have padding
 .with-margin
-  margin: 20px
+  margin: $outer-margin
 
 .left
   float: left
@@ -41,8 +39,8 @@ body
   font-weight: 600
 
 #sidebar
-  width: 250px
-  height: 720px
+  width: 27%
+  min-height: 720px
   overflow: hidden
   background-color: #F5F5F5
   text-align: center
@@ -67,10 +65,8 @@ body
   .small-panel
     text-align: center
     position: relative
-    margin-bottom: 10px
-    font-size: $small-font // this needs to be removed
     text-transform: uppercase
-    padding: 7px 0 4px 0
+    padding: 9px 0 9px 0
 
   .highlight
     background-color: $featured-color
@@ -78,8 +74,7 @@ body
 
 // featured panel
 #featured
-  width: 710px
-  height: 720px
+  width: 73%
   background-color: $featured-color
 
   .info
@@ -88,60 +83,54 @@ body
     height: 108px
     overflow: hidden
 
-    .title
-      margin: 14px 0 0 14px
-      display: inline-block
-      color: $title-color
-      text-transform: uppercase
-
-    .days-remaining
-      margin: 8px 0 0 14px
-      display: inline-block
-
-    span
-      line-height: 1em
-
     .logo
       width: 216px
       text-align: center
       height: 108px
       overflow: hidden
-      //background-color: $image-color
-      border-right: $featured-color solid 20px
-
+      border-right: $featured-color solid $outer-margin
       background: url("/public/swarm.jpg")
 
-      //img
-        //width: 100%
-        //max-width: 100%
-        //max-height: 108px
+    .title
+      margin: $inner-margin 0 0 $inner-margin
+      display: inline-block
+      color: $title-color
+      text-transform: uppercase
+
+    .days-remaining
+      margin: 0 0 $inner-margin $inner-margin 
+      display: inline-block
+      line-height: 0em
+
+    span
+      line-height: 1em
 
   .campaign
     width: 100%
     background-color: $subsection-color
-    margin-top: 20px
+    margin-top: $outer-margin
 
     span
       display: inline-block
 
     .title
       color: $title-color
-      margin: 14px 14px 10px 14px
+      margin: $inner-margin $inner-margin 10px $inner-margin
       text-transform: uppercase
 
     .teaser
-      margin: 0 14px 14px 14px
-      line-height: 1em
+      margin: 0 $inner-margin $inner-margin $inner-margin
+      line-height: 1.2em
   
   .data-display
     width: 100%
     background-color: $subsection-color
-    margin-top: 20px
+    margin-top: $outer-margin
 
     .title
       display: inline-block
       color: $title-color
-      margin: 14px 14px 10px 14px
+      margin: $inner-margin $inner-margin 10px $inner-margin
       text-transform: uppercase
 
     .numbers
@@ -157,11 +146,11 @@ body
 
         .tick
           margin-top: 0
-          margin-bottom: 14px
+          margin-bottom: $inner-margin
           float: right
           width: 372px
+          font-size: 76px
 
       #graph
         margin: -4px auto
-
-      
+        font-size: .6em
