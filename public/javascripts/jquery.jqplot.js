@@ -1095,10 +1095,10 @@
         this.show = true;
         // prop: fontFamily
         // css font-family spec for the text.
-        this.fontFamily;
+        this.fontFamily = 'din-web-reg';
         // prop: fontSize
         // css font-size spec for the text.
-        this.fontSize ;
+        this.fontSize = '24px';
         // prop: textAlign
         // css text-align spec for the text.
         this.textAlign;

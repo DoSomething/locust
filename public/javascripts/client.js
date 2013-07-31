@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 300000;
+var rotatePause = 15000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -39,7 +39,6 @@ $(document).ready(function() {// begin jQuery
     var logo = data.rows[0].logo;
     var name = data.rows[0].title;
     var teaser = data.rows[0].teaser;
-    var startDate = data.rows[0].startDate;
 
     if(users.rows.length < 2){
       var usersYest = 0;
@@ -66,7 +65,7 @@ $(document).ready(function() {// begin jQuery
       remaining = remaining + " Days Remaining";
     }
 
-    var memberArray = [[startDate,0]];
+    var memberArray = [];
     users.rows.forEach(function(r) {
       memberArray.push([r.date, r.totalSignups]);
     });
@@ -74,7 +73,6 @@ $(document).ready(function() {// begin jQuery
     campaigns.push({'name': name,
                     'pic': logo,
                     'daysLeft': remaining,
-                    'start': startDate,
                     'teaser': teaser,
                     'usersYest': usersYest,
                     'usersNow': usersNow,
@@ -86,7 +84,7 @@ $(document).ready(function() {// begin jQuery
                     'webSignups': webSignups,
                     'newMembers': newMembers,
                     'oldMembers': oldMembers,
-                    'memberArray': memberArray
+                    'memberArray': memberArray,
                   });
     var cIndex = campaigns.length - 1;
 
@@ -141,8 +139,12 @@ $(document).ready(function() {// begin jQuery
                   campaigns[cIndex].name +
                 "</div>";
     $("#sidebar").append(panel);
+    // set the triangle to the top campaign
     if(cIndex == 0){
-      $("#0").addClass("highlight");
+      var top = $("#" + cIndex).position().top;
+      var left = $("#featured").position().left - 24;
+      $("#arrow").css({"top": top, "left": left});
+      $("#" + cIndex).css("color", "#3892E3");
     }
     
     // WARNING: this should only occur after they are all loaded
@@ -156,7 +158,6 @@ $(document).ready(function() {// begin jQuery
   });
 
   var rotateFeatured = setInterval(function() {
-    $("#" + i).removeClass("highlight");
     i++;
     if (i >= campaigns.length) {
       i = 0;
@@ -208,7 +209,15 @@ $(document).ready(function() {// begin jQuery
       }
     });
 
-    $("#" + i).addClass("highlight");
+    // change where the triangle is
+    var top = $("#" + i).position().top;
+    $("#arrow").animate({"top": top}, function(){
+      $(".small-panel").each(function(){
+        $(this).css("color", "#000000");
+      });
+      $("#" + i).css("color", "#3892E3");
+    });
+
 
     // fill in the featured panel
     $('#featured').find('.info').find('.title').text(campaigns[i].name);
@@ -251,7 +260,7 @@ $(document).ready(function() {// begin jQuery
            // Make this a pie chart.
            renderer: jQuery.jqplot.PieRenderer, 
           }, 
-          seriesColors :['#18408b','#fed100'],
+          seriesColors :['#A3CEF4','#3892E3'],
           legend: { 
             border: 'none',
             fontSize: '16pt',
@@ -261,6 +270,9 @@ $(document).ready(function() {// begin jQuery
             drawBorder:false,
             shadow: false,
             background: '#F5F5F5'
+          },
+          title: {
+            text: "title 1",
           }
        }
     );
@@ -272,11 +284,8 @@ $(document).ready(function() {// begin jQuery
       ];
       plot = $.jqplot ('graph', [data], 
         { 
-          seriesDefaults: {
-             // Make this a pie chart.
-             renderer: jQuery.jqplot.PieRenderer, 
-            },
-            seriesColors :['#18408b','#fed100'], 
+          seriesDefaults: { renderer: jQuery.jqplot.PieRenderer },
+            seriesColors :['#A3CEF4','#3892E3'], 
             legend: { 
               border: 'none',
               fontSize: '16pt',
@@ -286,6 +295,9 @@ $(document).ready(function() {// begin jQuery
               drawBorder:false,
               shadow: false,
               background: '#F5F5F5'
+            },
+            title: {
+              text: "title 2"
             }
          }
       );
@@ -294,32 +306,28 @@ $(document).ready(function() {// begin jQuery
         plot.destroy();
         plot = $.jqplot ('graph', [campaigns[i].memberArray], 
           { 
-            axesDefaults: {
-              labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-            }, 
+            axesDefaults: { labelRenderer: $.jqplot.CanvasAxisLabelRenderer }, 
             grid: {
               drawBorder:false,
               shadow: false,
               background: '#F5F5F5'
             },
-            series: {
-              lineWidth:4
-            },
-            legend: {
-              show: false
+            series: [{
+              lineWidth:3,
+              markerOptions: { size: 6 }
+            }],
+            legend: { show: false },
+            title: {
+              text: "title 3"
             },
             axes: {
               xaxis: {
                 renderer:$.jqplot.DateAxisRenderer,
                 tickOptions:{formatString:'%b %#d'},
-                min: campaigns[i].start,
                 label: "Date",
                 pad: 0
               },
-              yaxis: {
-                min: 0,
-                label: "Total Signups"
-              }
+              yaxis: { label: "Total Signups" }
             }
           }
         );
