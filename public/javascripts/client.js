@@ -141,8 +141,12 @@ $(document).ready(function() {// begin jQuery
                   campaigns[cIndex].name +
                 "</div>";
     $("#sidebar").append(panel);
+    // set the triangle to the top campaign
     if(cIndex == 0){
-      $("#0").addClass("highlight");
+      var top = $("#" + cIndex).position().top;
+      var left = $("#featured").position().left - 24;
+      $("#arrow").css({"top": top, "left": left});
+      $("#" + cIndex).css("color", "#3892E3");
     }
     
     // WARNING: this should only occur after they are all loaded
@@ -156,7 +160,6 @@ $(document).ready(function() {// begin jQuery
   });
 
   var rotateFeatured = setInterval(function() {
-    $("#" + i).removeClass("highlight");
     i++;
     if (i >= campaigns.length) {
       i = 0;
@@ -208,7 +211,15 @@ $(document).ready(function() {// begin jQuery
       }
     });
 
-    $("#" + i).addClass("highlight");
+    // change where the triangle is
+    var top = $("#" + i).position().top;
+    $("#arrow").animate({"top": top}, function(){
+      $(".small-panel").each(function(){
+        $(this).css("color", "#000000");
+      });
+      $("#" + i).css("color", "#3892E3");
+    });
+
 
     // fill in the featured panel
     $('#featured').find('.info').find('.title').text(campaigns[i].name);

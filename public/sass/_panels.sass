@@ -9,6 +9,7 @@ body
   width: 100%
   min-width: $window-width
   min-height: $window-height
+  position: relative
 
 //this is helpful for making the content of this div appear to have padding
 .with-margin
@@ -68,9 +69,15 @@ body
     text-transform: uppercase
     padding: 9px 0 9px 0
 
-  .highlight
-    background-color: $featured-color
-    color: $subsection-color
+#arrow
+  width: 0 
+  height: 0
+  border-top: 27px solid transparent
+  border-bottom: 27px solid transparent
+  border-right: 27px solid $featured-color
+  position: absolute
+  top: 0
+  left: 0
 
 // featured panel
 #featured
