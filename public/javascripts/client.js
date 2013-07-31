@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 300000;
+var rotatePause = 15000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -95,6 +95,11 @@ $(document).ready(function() {// begin jQuery
     if(cIndex == 0){// fill in the featured panel
       campaigns[0].flipPause = (dayLength) / (campaigns[0].usersNow - campaigns[0].usersYest);
       $(".tick").text(campaigns[0].usersYest);
+
+      if(window.location.hash != "#tv"){
+        $("#tick-holder").css({"width":"352px"});
+        $(".tick").css({"width":"336px"});
+      }
 
       ticker = $(".tick").ticker({
         incremental: 1,
