@@ -142,7 +142,7 @@ $(document).ready(function() {// begin jQuery
     // set the triangle to the top campaign
     if(cIndex == 0){
       var top = $("#" + cIndex).position().top;
-      var left = $("#featured").position().left - 24;
+      var left = $("#featured").position().left - 23;
       $("#arrow").css({"top": top, "left": left});
       $("#" + cIndex).css("color", "#3892E3");
     }
