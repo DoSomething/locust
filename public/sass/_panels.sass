@@ -133,31 +133,38 @@ body
     width: 100%
     background-color: $subsection-color
     margin-top: $outer-margin
+    overflow: hidden
 
     .title
       display: inline-block
       color: $title-color
       margin: $inner-margin $inner-margin 10px $inner-margin
       text-transform: uppercase
+    
+    .centered
+      width: 840px
+      margin: 30px auto 0 auto
 
-    .numbers
-      margin: -47px auto 0 auto
-      text-align: center
+      .numbers
+        text-align: center
+        width: 400px
+        margin-right: 20px
 
-      .label
-        display: inline-block
+        .label
+          display: inline-block
+          margin-bottom: 10px
 
-      #tick-holder
-        margin: 0 auto
-        width: 386px
+        #tick-holder
+          margin: 0 auto
+          width: 386px
 
-        .tick
-          margin-top: 0
-          margin-bottom: $inner-margin
-          float: right
-          width: 372px
-          font-size: 76px
+          .tick
+            margin-top: 0
+            margin-bottom: $inner-margin
+            float: right
+            width: 372px
+            font-size: 76px
 
       #graph
-        margin: 10px auto
+        margin-left: 20px
         font-size: .6em

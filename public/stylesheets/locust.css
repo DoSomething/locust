@@ -171,38 +171,46 @@ body {
   width: 100%;
   background-color: whitesmoke;
   margin-top: 1.125em;
+  overflow: hidden;
 }
-/* line 137, ../sass/_panels.sass */
+/* line 138, ../sass/_panels.sass */
 #featured .data-display .title {
   display: inline-block;
   color: #3892e3;
   margin: 14px 14px 10px 14px;
   text-transform: uppercase;
 }
-/* line 143, ../sass/_panels.sass */
-#featured .data-display .numbers {
-  margin: -47px auto 0 auto;
+/* line 144, ../sass/_panels.sass */
+#featured .data-display .centered {
+  width: 840px;
+  margin: 30px auto 0 auto;
+}
+/* line 148, ../sass/_panels.sass */
+#featured .data-display .centered .numbers {
   text-align: center;
+  width: 400px;
+  margin-right: 20px;
 }
-/* line 147, ../sass/_panels.sass */
-#featured .data-display .numbers .label {
+/* line 153, ../sass/_panels.sass */
+#featured .data-display .centered .numbers .label {
   display: inline-block;
+  margin-bottom: 10px;
 }
-/* line 150, ../sass/_panels.sass */
-#featured .data-display .numbers #tick-holder {
+/* line 157, ../sass/_panels.sass */
+#featured .data-display .centered .numbers #tick-holder {
   margin: 0 auto;
   width: 386px;
 }
-/* line 154, ../sass/_panels.sass */
-#featured .data-display .numbers #tick-holder .tick {
+/* line 161, ../sass/_panels.sass */
+#featured .data-display .centered .numbers #tick-holder .tick {
   margin-top: 0;
   margin-bottom: 14px;
   float: right;
   width: 372px;
   font-size: 76px;
 }
-/* line 161, ../sass/_panels.sass */
-#featured .data-display .numbers #graph {
-  margin: 10px auto;
+/* line 168, ../sass/_panels.sass */
+#featured .data-display .centered #graph {
+  margin-left: 20px;
   font-size: 0.6em;
 }
