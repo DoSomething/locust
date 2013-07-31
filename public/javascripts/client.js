@@ -26,7 +26,6 @@ $(document).ready(function() {// begin jQuery
 
 	socket.on("setCampaign", function (info, users, remove) {
     if (remove) {
-      console.log("here");
       campaigns = [];
       $('.small-panel').each(function() {
         $(this).remove();
@@ -35,8 +34,8 @@ $(document).ready(function() {// begin jQuery
       numSmallPanels = 0;
       $(".tick").remove();  
       $("#tick-holder").prepend("<p class='tick tick-flip'>" + "</p>");
-
     }
+
     var data = JSON.parse(info);
     var users = JSON.parse(users);
     var logo = data.rows[0].logo;
@@ -50,6 +49,10 @@ $(document).ready(function() {// begin jQuery
       var usersYest = users.rows[users.rows.length - 2].totalSignups;
     }
     var usersNow = users.rows[users.rows.length - 1].totalSignups;
+    if (usersNow == 0) {
+      return;
+    }
+
     var mobileSignups = users.rows[users.rows.length - 1].mobileSignups;
     var webSignups = users.rows[users.rows.length - 1].webSignups;
     var newMembers = users.rows[users.rows.length - 1].totalNewMembers;
@@ -117,10 +120,6 @@ $(document).ready(function() {// begin jQuery
         $('#featured').find(".teaser").text(campaigns[0].teaser.substring(0, 142).concat("..."));  
       }else{
         $('#featured').find(".teaser").text(campaigns[0].teaser);
-      }
-
-      if (campaigns[0].usersNow == 0) {
-        ticker[0].stop();
       }
 
       var height = 720 - (80 + 108 + Number($('#featured').find('.campaign').css('height').replace("px", "")));
