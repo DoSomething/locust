@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 15000;
+var rotatePause = 300000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -272,7 +272,7 @@ $(document).ready(function() {// begin jQuery
             background: '#F5F5F5'
           },
           title: {
-            text: "title 1",
+            text: "How Did We Reach Our Members?",
           }
        }
     );
@@ -280,7 +280,7 @@ $(document).ready(function() {// begin jQuery
     setTimeout(function() {
       plot.destroy();
       data = [
-        ["New DS Members", campaigns[i].newMembers],["Old DS Members", campaigns[i].oldMembers]
+        ["New Members", campaigns[i].newMembers],["Existing Members", campaigns[i].oldMembers]
       ];
       plot = $.jqplot ('graph', [data], 
         { 
@@ -297,7 +297,7 @@ $(document).ready(function() {// begin jQuery
               background: '#F5F5F5'
             },
             title: {
-              text: "title 2"
+              text: "New Members?"
             }
          }
       );
@@ -318,7 +318,7 @@ $(document).ready(function() {// begin jQuery
             }],
             legend: { show: false },
             title: {
-              text: "title 3"
+              text: "Campaign Member Growth"
             },
             axes: {
               xaxis: {
