@@ -7,7 +7,7 @@ var plot;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 15000;
+var rotatePause = 300000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
