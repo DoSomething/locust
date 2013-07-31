@@ -11,7 +11,7 @@
 .tick-flip {
   position: relative;
   float: left;
-  padding: 7px;
+  padding: 7px 0;
   border: 1px solid #1e1e1e;
   border-radius: 5px;
   margin-bottom: 0.125em;
