@@ -130,7 +130,7 @@ client.scp({
   					  	  			  }
   					  	  			});
                         
-  									conn.query('SELECT title, logo, teaser, startDate, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
+  									conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
   										send(JSON.stringify(result), true);
   									});
 
