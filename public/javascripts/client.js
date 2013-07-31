@@ -4,10 +4,11 @@ var numSmallPanels = 0;
 var ticker;
 var data;
 var plot;
+var numTicks = 7;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 300000;
+var rotatePause = 15000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -242,6 +243,11 @@ $(document).ready(function() {// begin jQuery
 
 
   function rotateGraphs() {
+    if (campaigns[i].memberArray.length < 7) {
+      numTicks = campaigns[i].memberArray.length;
+      console.log(numTicks);
+    }
+
     if (campaigns[i].usersNow <= 0) {
       if (plot != undefined) {
         plot.destroy();
@@ -273,9 +279,11 @@ $(document).ready(function() {// begin jQuery
           },
           title: {
             text: "How Did We Reach Our Members?",
+            fontWeight: '600'
           }
        }
     );
+    $('.jqplot-title').css('fontWeight', '600');
 
     setTimeout(function() {
       plot.destroy();
@@ -301,6 +309,8 @@ $(document).ready(function() {// begin jQuery
             }
          }
       );
+      $('.jqplot-title').css('fontWeight', '600');
+
 
       setTimeout(function() {
         plot.destroy();
@@ -318,19 +328,21 @@ $(document).ready(function() {// begin jQuery
             }],
             legend: { show: false },
             title: {
-              text: "Campaign Member Growth"
+              text: "Campaign Member Growth",
             },
             axes: {
               xaxis: {
                 renderer:$.jqplot.DateAxisRenderer,
+                numberTicks: numTicks,
                 tickOptions:{formatString:'%b %#d'},
-                label: "Date",
-                pad: 0
+                label: "Date"
               },
               yaxis: { label: "Total Signups" }
             }
           }
         );
+        $('.jqplot-title').css('fontWeight', '600');
+
       }, (rotatePause/3));
     }, (rotatePause/3));
   }
