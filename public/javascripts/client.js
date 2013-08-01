@@ -136,7 +136,7 @@ $(document).ready(function() {// begin jQuery
 
     // fill out a small panel for all campaigns   
     numSmallPanels++;
-    var panel = "<div id='" + cIndex + "' class='small-panel small-font'>" +
+    var panel = "<div id='" + cIndex + "' class='small-panel small-font bold'>" +
                   campaigns[cIndex].name +
                 "</div>";
     $("#sidebar").append(panel);
