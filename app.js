@@ -74,7 +74,6 @@ io.sockets.on('connection', function(socket){
                       request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
                         var campaign = JSON.parse(body);
-                        //console.log(campaign);
                         var usersNow = 0;
                         var mobileSignups = 0;
                         var webSignups = 0;
@@ -92,10 +91,8 @@ io.sockets.on('connection', function(socket){
               
                         conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], campaignStats.campaigns_pull.date], function(error, result) {
                           if (result.rowCount == 0) {
-                            console.log("here");
 
                             for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
-                              console.log(JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name));
                               if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
                                 usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
                                 mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
@@ -110,7 +107,6 @@ io.sockets.on('connection', function(socket){
 
                                 }
                                 if(campaign['title'] == "Thumb Wars" && campaignStats.campaigns_pull.campaigns[i].name == "Thumb_wars"){
-                                  console.log("here");
                                   usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
                                   mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
                                   webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
