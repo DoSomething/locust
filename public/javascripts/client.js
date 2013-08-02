@@ -8,7 +8,7 @@ var numTicks = 7;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 180000;
+var rotatePause = 60000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -136,7 +136,7 @@ $(document).ready(function() {// begin jQuery
 
     // fill out a small panel for all campaigns   
     numSmallPanels++;
-    var panel = "<div id='" + cIndex + "' class='small-panel small-font'>" +
+    var panel = "<div id='" + cIndex + "' class='small-panel small-font bold'>" +
                   campaigns[cIndex].name +
                 "</div>";
     $("#sidebar").append(panel);
