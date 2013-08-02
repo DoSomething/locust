@@ -8,7 +8,7 @@ var numTicks = 7;
 
 //flip variables
 var dayLength = 28800000;
-var rotatePause = 60000;
+var rotatePause = 30000;
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
