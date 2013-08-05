@@ -245,6 +245,8 @@ $(document).ready(function() {// begin jQuery
   function rotateGraphs() {
     if (campaigns[i].memberArray.length < 7) {
       numTicks = campaigns[i].memberArray.length;
+    }else{
+      numTicks = 7;
     }
 
     if (campaigns[i].usersNow <= 0) {
