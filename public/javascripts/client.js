@@ -2,7 +2,7 @@ var campaigns = [];
 var i = 0;
 var numSmallPanels = 0;
 var ticker;
-var data;
+var slices;
 var plot;
 var numTicks = 7;
 
@@ -256,10 +256,17 @@ $(document).ready(function() {// begin jQuery
     if (plot != undefined) {
       plot.destroy();
     }
-    data = [
-      ["Mobile Signups", campaigns[i].mobileSignups],["Web Signups", campaigns[i].webSignups]
-    ];
-    plot = $.jqplot ('graph', [data], 
+    
+    slices = [];
+    if (campaigns[i].mobileSignups < campaigns[i].webSignups) {
+      slices.push(["Mobile Signups", campaigns[i].mobileSignups]);
+      slices.push(["Web Signups", campaigns[i].webSignups]);
+    } else {
+      slices.push(["Web Signups", campaigns[i].webSignups]);
+      slices.push(["Mobile Signups", campaigns[i].mobileSignups]);
+    }
+
+    plot = $.jqplot ('graph', [slices], 
       { 
         seriesDefaults: {
            // Make this a pie chart.
@@ -286,10 +293,17 @@ $(document).ready(function() {// begin jQuery
 
     setTimeout(function() {
       plot.destroy();
-      data = [
-        ["New Members", campaigns[i].newMembers],["Existing Members", campaigns[i].oldMembers]
-      ];
-      plot = $.jqplot ('graph', [data], 
+
+      slices = [];
+      if (campaigns[i].newMembers < campaigns[i].oldMembers) {
+        slices.push(["New Members", campaigns[i].newMembers]);
+        slices.push(["Existing Members", campaigns[i].oldMembers]);
+      } else {
+        slices.push(["Existing Members", campaigns[i].oldMembers]);
+        slices.push(["New Members", campaigns[i].newMembers]);
+      }
+
+      plot = $.jqplot ('graph', [slices], 
         { 
           seriesDefaults: { renderer: jQuery.jqplot.PieRenderer },
             seriesColors :['#A3CEF4','#3892E3'], 
