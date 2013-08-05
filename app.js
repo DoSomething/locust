@@ -17,8 +17,6 @@ var credentials = require('./credentials.json');
 var campaignStats;
 var remove = true;
 
-campaignStats = require('./campaign_stats_final.json');
-
 var io = require('socket.io').listen(server);
 io.set('log level', 1); 
 
@@ -56,6 +54,7 @@ io.sockets.on('connection', function(socket){
           if (err) {
             return console.log(err);
           }else{
+            campaignStats = JSON.parse(data);
             remove = true;
             request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
               if (!error && response.statusCode == 200) {
