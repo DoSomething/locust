@@ -7,7 +7,6 @@ var conn = anyDB.createConnection('sqlite3://campaigns.db');
 var engines = require('consolidate');
 var request = require('request');
 var client = require('scp2');
-var fs = require('fs');
 require('date-utils');
 
 // credentials for scp request
@@ -25,6 +24,7 @@ app.engine('html', engines.hogan);
 app.set('views', __dirname + '/templates');
 app.use('/public', express.static(__dirname + '/public'));
 
+//create campaigns.db
 conn.query('CREATE TABLE IF NOT EXISTS campaigns (id INTEGER PRIMARY KEY AUTOINCREMENT, nid TEXT, title TEXT, logo TEXT, teaser TEXT, startDate TEXT, endDate TEXT)')
   .on('end', function(){
     console.log('Made campaigns table.');
@@ -37,6 +37,7 @@ conn.query('CREATE TABLE IF NOT EXISTS userData (nid TEXT, totalSignups INTEGER,
 
 io.sockets.on('connection', function(socket){
   run();
+  //set run() to execute every 24 hours
   setInterval(run, 86400000);
 
   function run() {
@@ -50,12 +51,15 @@ io.sockets.on('connection', function(socket){
         console.log(err);
       }else{
         console.log("SUCCESS: Copied campaign_stats_final.json to local machine.");
+        //get file with which to fill userData table
         campaignStats = require("./campaign_stats_final.json");
         remove = true;
+        //get list of current campaigns and their nids
         request('http://www.dosomething.org/rest/view/current_campaign_nids.json', function (error, response, body) {
           if (!error && response.statusCode == 200) {
             var activeCampaigns = JSON.parse(body);
 
+            //remove campaigns that have ended from the database
             conn.query('SELECT endDate, nid FROM campaigns', function(error, result) {
               result.rows.forEach(function(d) {
                 if (Date.today().isAfter(Date.parse(d.endDate))) {
@@ -66,6 +70,7 @@ io.sockets.on('connection', function(socket){
             });
                 
             activeCampaigns.forEach(function(c) {
+              //get basic campaign data for each active campaign
               request('http://www.dosomething.org/rest/node/' + c['nid'] + '.json', function (error, response, body) {
 
                 var campaign = JSON.parse(body);
@@ -108,12 +113,14 @@ io.sockets.on('connection', function(socket){
                       }
                     }
                     updated = true;
+                    //add data to userData table
                     conn.query('INSERT INTO userData (nid, totalSignups, date, totalNewMembers, mobileSignups, webSignups) VALUES ($1, $2, $3, $4, $5, $6)', [campaign['nid'], usersNow, campaignStats.campaigns_pull.date, newMembers, mobileSignups, webSignups], function(){
                       conn.query('SELECT totalSignups, date, totalNewMembers, mobileSignups, webSignups FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
+                        //grab the specific campaign's userData rows
                         send(null, JSON.stringify(result));
                       });
                     });
-                  }else{
+                  }else{ //if already exists in userData table
                     conn.query('SELECT totalSignups, date, totalNewMembers, mobileSignups, webSignups FROM userData WHERE nid=$1', campaign['nid'], function(error, result) {
                       send(null, JSON.stringify(result));
                     });
@@ -122,14 +129,14 @@ io.sockets.on('connection', function(socket){
                 
                 // nested functions to prevent asynchronous calls from screwing up the data that is sent
                 conn.query('SELECT * FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
-                  if(result.rowCount != 0){
+                  if(result.rowCount != 0){ //if campaign already in db, just update it
                     conn.query('UPDATE campaigns SET title=$1, teaser=$2, startDate=$3, endDate=$4, logo=$5 WHERE nid=$6', [campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic, campaign['nid']], function(){
                       //call back grab campaigns from database
                       conn.query('SELECT title, logo, teaser, endDate FROM campaigns WHERE nid=$1', campaign['nid'], function(error, result) {
                         send(JSON.stringify(result), null);
                       });
                     });
-                  }else{
+                  }else{ //if new campaign 
                     conn.query('INSERT INTO campaigns (nid, title, teaser, startDate, endDate, logo) VALUES ($1, $2, $3, $4, $5, $6)', 
                       [campaign['nid'], campaign['title'], campaign['field_campaign_teaser']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value'], campaign['field_campain_date']['und'][0]['value2'], pic], function(){
                       //call back grab campaigns from database
@@ -159,6 +166,7 @@ io.sockets.on('connection', function(socket){
                     if(incomingUserData != null){
                       users = incomingUserData;
                     }
+                    //send campaign data to the client side
                     socket.emit('setCampaign', info, users, remove);
                     remove = false;
                   }
