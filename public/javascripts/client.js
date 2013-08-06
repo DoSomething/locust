@@ -6,9 +6,11 @@ var slices;
 var plot;
 var numTicks = 7;
 
-//flip variables
-var dayLength = 28800000;
-var rotatePause = 30000;
+//amount of time it takes for ticker to reach final count
+var dayLength = 28800000; //8 hours
+//amount of time each campaign is shown
+var rotatePause = 30000; //30 seconds
+
 var firstLoop = true;
 
 $(document).ready(function() {// begin jQuery
@@ -23,7 +25,8 @@ $(document).ready(function() {// begin jQuery
 
 	var socket = io.connect(window.location.hostname);
 
-	socket.on("setCampaign", function (info, users, remove) {
+	//received for each campaign
+  socket.on("setCampaign", function (info, users, remove) {
     if (remove) {
       campaigns = [];
       $('.small-panel').each(function() {
@@ -113,7 +116,6 @@ $(document).ready(function() {// begin jQuery
       $('#featured').find('.info').find('.title').text(campaigns[0].name);
       $('#featured').find('.days-remaining').text(campaigns[0].daysLeft);
       
-      //$('#featured').find('.logo').find('img').attr("src", campaigns[0].pic);
       $('#featured').find('.logo').css("background", "url(" + campaigns[0].pic + ") no-repeat");
       $('#featured').find('.logo').css("background-size", "100% auto");
       $('#featured').find('.logo').css("background-position", "center");
@@ -153,11 +155,7 @@ $(document).ready(function() {// begin jQuery
     $("#locust-load").remove();
 	});
 
-
-  $("#ds-logo").on("click", function(){
-    ticker[0].stop();
-  });
-
+  //rotate which campaign is currently featured 
   var rotateFeatured = setInterval(function() {
     i++;
     if (i >= campaigns.length) {
@@ -166,7 +164,7 @@ $(document).ready(function() {// begin jQuery
 
     rotateGraphs();
 
-    // how many flips should I have completed?
+    // how many flips should I have completed while not featured campaign?
     if(firstLoop){
       if(i == campaigns.length - 1){
         firstLoop = false;
@@ -242,6 +240,7 @@ $(document).ready(function() {// begin jQuery
   }, rotatePause);
 
 
+  //rotate through the three graphs for each featured campaign
   function rotateGraphs() {
     if (campaigns[i].memberArray.length < 7) {
       numTicks = campaigns[i].memberArray.length;
@@ -267,11 +266,10 @@ $(document).ready(function() {// begin jQuery
       slices.push(["Web Signups", campaigns[i].webSignups]);
       slices.push(["Mobile Signups", campaigns[i].mobileSignups]);
     }
-
+    //mobile vs web pie chart
     plot = $.jqplot ('graph', [slices], 
       { 
         seriesDefaults: {
-           // Make this a pie chart.
            renderer: jQuery.jqplot.PieRenderer, 
           }, 
           seriesColors :['#A3CEF4','#3892E3'],
@@ -304,7 +302,7 @@ $(document).ready(function() {// begin jQuery
         slices.push(["Existing Members", campaigns[i].oldMembers]);
         slices.push(["New Members", campaigns[i].newMembers]);
       }
-
+      //new vs old members pie chart
       plot = $.jqplot ('graph', [slices], 
         { 
           seriesDefaults: { renderer: jQuery.jqplot.PieRenderer },
@@ -329,6 +327,7 @@ $(document).ready(function() {// begin jQuery
 
       setTimeout(function() {
         plot.destroy();
+        //# users vs time line graph
         plot = $.jqplot ('graph', [campaigns[i].memberArray], 
           { 
             axesDefaults: { labelRenderer: $.jqplot.CanvasAxisLabelRenderer }, 
