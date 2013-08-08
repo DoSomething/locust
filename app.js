@@ -92,24 +92,11 @@ io.sockets.on('connection', function(socket){
                 conn.query('SELECT * FROM userData WHERE nid=$1 AND date=$2', [campaign['nid'], campaignStats.campaigns_pull.date], function(error, result) {
                   if (result.rowCount == 0) {
                     for (var i = 0; i < campaignStats.campaigns_pull.campaigns.length; i++) {
-                      if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].name).indexOf(campaign['title']) !== -1) {
+                      if (JSON.stringify(campaignStats.campaigns_pull.campaigns[i].nid) == campaign['nid']) {
                         usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
                         mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
                         webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
                         newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
-                      } else {
-                        if(campaign['title'] == "25,000 Women" && campaignStats.campaigns_pull.campaigns[i].name == "25k Women"){
-                          usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-                          mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
-                          webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
-                          newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
-                        }
-                        if(campaign['title'] == "Thumb Wars" && campaignStats.campaigns_pull.campaigns[i].name == "Thumb_wars"){
-                          usersNow = campaignStats.campaigns_pull.campaigns[i].total_sign_ups_all;
-                          mobileSignups = campaignStats.campaigns_pull.campaigns[i].mobile_sign_ups_all;
-                          webSignups = campaignStats.campaigns_pull.campaigns[i].web_sign_ups_all;
-                          newMembers = campaignStats.campaigns_pull.campaigns[i].total_new_members_all;
-                        }
                       }
                     }
                     updated = true;
